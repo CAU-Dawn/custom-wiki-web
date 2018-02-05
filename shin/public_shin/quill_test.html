@@ -1,50 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <meta charset="utf-8">
         <title>quill_test</title>
-        <!-- Include stylesheet -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link href="https://cdn.quilljs.com/1.3.5/quill.snow.css" rel="stylesheet">
-        <!-- Include the Quill library -->
         <script src="https://cdn.quilljs.com/1.3.5/quill.js"></script>
+        <script src="C:\Users\advan\Documents\GitHub\node-wiki\shin\quill_test_js.js"></script>
 
     </head>
     <body>
 
-
-        <div id="editor-container">
-          <p>im here to create.</p>
+        <div id="form-container" class="container" style="width:500px;">
+            <form id="real-form">
+                <div class="row form-group">
+                    <label for="about"></label>
+                    <input name="about" type="hidden">
+                        <div id="editor-container">
+                        </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-primary" type="submit"> Save </button>
+                </div>
+            </form>
         </div>
-
-        <script>
-        var quill = new Quill('#editor-container', {
-          theme: 'snow',
-          modules: {
-            toolbar: [
-              [{ header: [1, 2, false] }],
-              ['code-block']
-            ]
-          },
-          placeholder: 'im here to create.'
-        });
-        </script>
-
 
     </body>
 </html>
-
-
-<div id="form-container" class="container">
-  <form>
-    <div class="row form-group">
-      <label for="about">About me</label>
-      <input name="about" type="hidden">
-      <div id="editor-container">
-        <p></p>
-      </div>
-    </div>
-    <div class="row">
-      <button class="btn btn-primary" type="submit">Save Profile</button>
-    </div>
-  </form>
-</div>
