@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="extra.css">
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <!-- include libraries(bootstrap) -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+    <!-- include summernote css/js -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+
 
   </head>
   <body>
@@ -23,7 +30,7 @@
                         <li><a href="list.html">List</a></li>
                         <li><a href="changed.html">Changed</a></li>
                         <li><a href="settings.html">Settings</a></li>
-                        <li id="active-random">Random</li>
+                        <li id="active-random"><a href="">Random</a></li>
                     </ul>
             		<form class="navbar-form navbar-right" role="search" method="POST" action="/search/">
                   	    <div class="form-group">
@@ -36,11 +43,23 @@
     </nav>
 
     <div class="container">
-      <div class="page-header">
-        <h1>{{ title }}</h1> <!--위키 제목-->
-      </div>
-      <p>{{ text }}</p> <!--위키 내용-->
+        <div class="page-header">
+            <h1>Hello</h1>
+        </div>
+        <div class="edit">
+            <button type="button" id="edit-button" class="btn btn-edit">Edit</button>
+        </div>
+        <p></p>
     </div>
 
+    <script>
+        $("#edit-button").click(function(){
+            if( $(this).html() == 'Edit' ) {
+              $(this).html('Submit');
+            } else {
+              $(this).html('Edit');
+            }
+        });
+    </script>
   </body>
 </html>
