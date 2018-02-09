@@ -1,0 +1,8 @@
+create page.
+=> edit 만이 보인다. (submit은 hide상태)
+=> edit 를 누르면, editor가 열린다. (type이 button이다.) (only JS? 서버필요?)
+=> edit 버튼은 hide되고 submit버튼이 따로 생성된다. (type이 submit이다.)
+=> 글을 다 쓴 후 submit을 하면 서버로 전송된다.(ajax 사용.)
+=> 그렇게 전송된 form은 바로 페이지에 로드되어 한편의 글로 보여지게 된다. (이때 submit버튼은 hide되고 edit버튼이 다시 생성된다.)
+
+// 미리보기기능, 부분편집기능(섹션), 권한부여기능, 

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html>
-  <head>
+<head>
 
     <title>iswiki - door</title> <!--위키 항목마다 {{ title }}이 바뀌도록 서버와 연결해야함!-->
 
@@ -14,9 +14,7 @@
     <!-- include summernote css/js -->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
-
-
-  </head>
+</head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -42,24 +40,63 @@
         </div>
     </nav>
 
+
+
     <div class="container">
         <div class="page-header">
             <h1>Hello</h1>
         </div>
-        <div class="edit">
-            <button type="button" id="edit-button" class="btn btn-edit">Edit</button>
-        </div>
-        <p></p>
+        <form class="edit-summit-form" method="post" action="      ">
+                <div id="editor">
+                    <!--<button type="button" id="ajaxsend" class="btn btn-edit">Edit</button>-->
+                </div>
+
+        </form>
+        <p>
+            <!--<div id="summernote-result"></div>-->
+        </p>
+        <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit 1</button>
+        <button id="save" class="btn btn-primary" onclick="save()" type="button">Save 2</button>
+        <div class="click2edit">click2edit</div>
     </div>
 
     <script>
-        $("#edit-button").click(function(){
+        /*$("#ajaxsend").click(function(){
             if( $(this).html() == 'Edit' ) {
               $(this).html('Submit');
             } else {
               $(this).html('Edit');
             }
+        });*/
+
+        $(document).ready(function() {
+            $('#summernote').summernote();
         });
+
+        var edit = function() {
+          $('.click2edit').summernote({focus: true});
+        };
+
+        var save = function() {
+          var markup = $('.click2edit').summernote('code');
+          $('.click2edit').summernote('destroy');
+        };
+
     </script>
   </body>
 </html>
+
+<!--$('#editor').html("<textarea id="summernote" name="editordata"></textarea>");
+$('#ajaxsend').on('click', function() {
+    var data = $(this).val();
+    $.ajax({
+        url: '/index.html',
+        type: 'get',
+        data: {UnitId: data},
+        success:function(response)
+        {
+          $('#EditUnitName').val(response[0].Units);
+          $("#summernote-result").summernote("code", response[0].UnitsDescription);
+        }
+    })
+}); -->
