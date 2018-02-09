@@ -40,63 +40,38 @@
         </div>
     </nav>
 
-
-
     <div class="container">
         <div class="page-header">
-            <h1>Hello</h1>
+            <h1>shield spear door iswiki</h1>
         </div>
-        <form class="edit-summit-form" method="post" action="      ">
-                <div id="editor">
-                    <!--<button type="button" id="ajaxsend" class="btn btn-edit">Edit</button>-->
-                </div>
-
-        </form>
-        <p>
-            <!--<div id="summernote-result"></div>-->
-        </p>
-        <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit 1</button>
-        <button id="save" class="btn btn-primary" onclick="save()" type="button">Save 2</button>
-        <div class="click2edit">click2edit</div>
+            <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
+            <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
+            <div class="editor">Here to create.</div>
     </div>
 
     <script>
-        /*$("#ajaxsend").click(function(){
-            if( $(this).html() == 'Edit' ) {
-              $(this).html('Submit');
-            } else {
-              $(this).html('Edit');
+    var edit = function() {
+        $('.editor').summernote({focus: true});
+    };
+    var submit = function() {
+        var markup = $('.editor').summernote('code');
+        $('.editor').summernote('destroy');
+    };
+
+    $('#submit').on('click', function() {
+        var data = $(this).val();
+        $.ajax({
+            url: '/index.html',
+            type: 'get',
+            data: {UnitId: data},
+            success:function(response)
+            {
+              $('#EditUnitName').val(response[0].Units);
+              $("#summernote-result").summernote("code", response[0].UnitsDescription);
             }
-        });*/
-
-        $(document).ready(function() {
-            $('#summernote').summernote();
-        });
-
-        var edit = function() {
-          $('.click2edit').summernote({focus: true});
-        };
-
-        var save = function() {
-          var markup = $('.click2edit').summernote('code');
-          $('.click2edit').summernote('destroy');
-        };
+        })
+    });
 
     </script>
   </body>
 </html>
-
-<!--$('#editor').html("<textarea id="summernote" name="editordata"></textarea>");
-$('#ajaxsend').on('click', function() {
-    var data = $(this).val();
-    $.ajax({
-        url: '/index.html',
-        type: 'get',
-        data: {UnitId: data},
-        success:function(response)
-        {
-          $('#EditUnitName').val(response[0].Units);
-          $("#summernote-result").summernote("code", response[0].UnitsDescription);
-        }
-    })
-}); -->
