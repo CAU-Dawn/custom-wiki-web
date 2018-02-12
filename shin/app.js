@@ -1,20 +1,18 @@
 var express = require('express');
+var http = require('http');
+var bodyParser = require('body-parser');
 var app = express();
-var bodyParser = require('body-parser')
+
 
 app.use(express.static('public_shin'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.get('/index.html', function(req,res){
-  //res.( __dirname + "/public/main.html")
+app.post('/index.html', function(req, res) {
+    console.log(req.body);
+    res.send({key:true});
 });
 
-app.post('/', function(req,res){
-  //console.log(req.body)
-  //res.send("welcome! " + req.body.email)
-});
-
-app.listen(3000, function(){
-  console.log("start! express server is running on port 3000")
+http.createServer(app).listen(3000, function(){
+    console.log('Express 서버가 3000번 포트에서 시작됨');
 });

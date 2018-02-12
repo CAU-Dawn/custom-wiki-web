@@ -42,35 +42,45 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>shield spear door iswiki</h1>
+            <h1>Door ISWIKI official</h1>
         </div>
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
+            <button id="preview" class="btn btn-primary" onclick="preview()" type="button">Preview</button>
             <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
-            <div class="editor">Here to create.</div>
+            <div class="editor"></div>
+            <div class="ajax-result"></div>
     </div>
 
     <script>
     var edit = function() {
-        $('.editor').summernote({focus: true});
+        $('.editor').summernote({
+            focus: true,
+            placeholder: "Here to create."
+        });
     };
-    var submit = function() {
+    var preview = function() {
         var markup = $('.editor').summernote('code');
         $('.editor').summernote('destroy');
     };
 
-    $('#submit').on('click', function() {
-        var data = $(this).val();
+    var submit = function(){
+        var data = $('.editor').summernote('code');
         $.ajax({
             url: '/index.html',
-            type: 'get',
-            data: {UnitId: data},
-            success:function(response)
-            {
-              $('#EditUnitName').val(response[0].Units);
-              $("#summernote-result").summernote("code", response[0].UnitsDescription);
+            type: 'post',
+            data: {"contents": data},
+            dataType: 'html',
+            success: function(result)
+            {   //서버단에서는 'DB에 저장작업' 을 하고, 그게 성공적으로 처리됐다는 것을 리턴해준다.
+                //그 다음 여기서 트루를 리턴받으면, 에디터가 사라지고 디스플레이가 된다.
+                console.log(result.key); //<= problem.
+              if ( result["key"] == true ) {
+                  $('.editor').summernote('destroy');
+                  $('.ajax-result').html("Congrat.");
+              }
             }
-        })
-    });
+         })
+     }
 
     </script>
   </body>
