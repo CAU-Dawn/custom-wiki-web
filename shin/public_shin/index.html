@@ -69,19 +69,20 @@
             url: '/index.html',
             type: 'post',
             data: {"contents": data},
-            dataType: 'html',
+            dataType: 'JSON', //return때의 type을 expect.
             success: function(result)
             {   //서버단에서는 'DB에 저장작업' 을 하고, 그게 성공적으로 처리됐다는 것을 리턴해준다.
-                //그 다음 여기서 트루를 리턴받으면, 에디터가 사라지고 디스플레이가 된다.
-                console.log(result.key); //<= problem.
-              if ( result["key"] == true ) {
-                  $('.editor').summernote('destroy');
-                  $('.ajax-result').html("Congrat.");
-              }
+                console.log(result);
+                if ( result.status == 200 ) {
+                    $('.editor').summernote('destroy');
+                    $('.ajax-result').html("Congrat.");
+                }
             }
          })
      }
-
+    //부분편집기능(h2하위p), 내부검색기능+팝업에디팅(가장중요)
+    //이미지화 빅데이터모델링(해쉬태그기반 또는 텍스트 트랙킹)=>메인페이지.
+    //메인페이지 토킹api 퀘스쳔 및 프로젝트구인 으로 활용.
     </script>
   </body>
 </html>
