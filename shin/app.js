@@ -2,7 +2,7 @@ var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Wikidb = require('db.js'); //<=모듈문제? db연결작업
+var Wikidb = require('./db.js');
 var app = express();
 
 app.use(express.static('public_shin'));
@@ -16,23 +16,33 @@ db.once('open', function(){
 });
 mongoose.connect('mongodb://localhost:27017');
 
-app.post('/index.html/:', function(req, res) {
+app.post('/index.html', function(req, res) {
     console.log(req.body);
-    res.json({status : 200});
+    //생성
     var wiki = new Wikidb();
-    wiki.title = req.body.name;
-    wiki.author = req.body.author;
-    wiki.edited_date = new Date(req.body.edited_date);
-
+    wiki.title = req.body.title;
+    //wiki.author = req.body.author;
+    wiki.data = req.body.contents;
+    wiki.edited_date = new Date();
+    //title, author, data, edited_date
     wiki.save(function(err){
         if(err){
             console.error(err);
-            res.json({result: 0});
+            res.json({status: 0});
+            console.log({status: 0});
             return;
         }
-        res.json({result: 1});
+        res.json({status: 1});
+        console.log({status: 1});
     });
+
 });
+//검색
+/*Wikidb.find(function(err, wikis){
+    if(err) return res.status(500).send({error: 'database failure'});
+    res.json(wikis);
+})*/
+
 
 http.createServer(app).listen(3000, function(){
     console.log('Express 서버가 3000번 포트에서 시작됨');
