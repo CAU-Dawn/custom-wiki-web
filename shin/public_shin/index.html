@@ -46,7 +46,8 @@
         </div>
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
             <button id="preview" class="btn btn-primary" onclick="preview()" type="button">Preview</button>
-            <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
+            <button id="submit" class="btn btn-primary"  type="button">Submit</button>
+            <div id="input_title"><input type="text" id="title" placeholder="input title"></div>
             <div id="editor"></div>
             <div id="ajax-result"></div>
     </div>
@@ -54,36 +55,32 @@
     <script>
 
     var edit = function() {
-        /*// initialize summernote
-        $('.summernote').summernote();
-        // and set code
-        $('.summernote').summernote('code', contents);*/
-
         $('#editor').summernote({
             focus: true,
             placeholder: "Here to create."
         });
+        //$('.summernote').summernote('code', contents);
     };
 
     var preview = function() {
         $('#editor').summernote('destroy');
-        //$('#editor h1').attr('id','title');
     };
 
+    $('#title').on('input', function() {
+        var title = $(this).val();
+        console.log(title);
+    });
+
     var submit = function(){
-        //var title = $('#editor h1');
-        //동적으로 id 삽입이 여기서는 안된다. 다른 단계에서가 필요한데.. 이게 가장 좋은 방법이니까.
-        //아니면 이단계에서 추출해내는게 아예 안되는걸지도..?
-        //그렇다면 preview 버튼을 강제로 누르게 해버릴까?
         var data = $('#editor').summernote('code');
-        console.log($('#editor h1').html());
+        console.log($('#title').val());
         $.ajax({
             url: '/index.html',
             type: 'post',
-            data: {"contents": data, /*"title": title*/},
+            data: {"contents": data, "title": $('#title').val()},
             dataType: 'JSON',
             success: function(result)
-            {   //서버단에서는 'DB에 저장작업' 을 하고, 그게 성공적으로 처리됐다는 것을 리턴해준다.
+            {
                 console.log(result);
                 if ( result.status == 1 ) {
                     $('#editor').summernote('destroy');
@@ -91,10 +88,11 @@
                 }
             }
          })
-     }
-    //부분편집기능(h2하위p), 내부검색기능+팝업에디팅(가장중요)
-    //이미지화 빅데이터모델링(해쉬태그기반 또는 텍스트 트랙킹)=>메인페이지.
-    //메인페이지 토킹api 퀘스쳔 및 프로젝트구인 으로 활용.
+     };
+
+    $('#submit').on('click', function(){
+         submit();
+     });
     </script>
   </body>
 </html>
