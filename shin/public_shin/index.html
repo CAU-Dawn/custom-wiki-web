@@ -44,12 +44,13 @@
         <div class="page-header">
             <h1>Door ISWIKI official</h1>
         </div>
+        <form method="post">
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
             <button id="preview" class="btn btn-primary" onclick="preview()" type="button">Preview</button>
             <button id="submit" class="btn btn-primary"  type="button">Submit</button>
-            <div id="input_title"><input type="text" id="title" placeholder="input title"></div>
-            <div id="editor"></div>
-            <div id="ajax-result"></div>
+            <textarea id="editor" name="editordata"></textarea>
+        </form>
+        <div id="ajax-result"></div>
     </div>
 
     <script>
@@ -66,7 +67,7 @@
         $('#editor').summernote('destroy');
     };
 
-    $('#title').on('input', function() {
+    $('#editor').on('input', function() {
         var title = $(this).val();
         console.log(title);
     });

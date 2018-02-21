@@ -36,7 +36,7 @@ mongoose.connect('mongodb://localhost:27017');
     });
 });*/
 
-app.post('/', function(req, res){ //라우팅이 여러가지에서 문제가 생겨..
+app.post('/index.html', function(req, res){ //라우팅이 여러가지에서 문제가 생겨..
     //res.render('index.html'); db datd를 로드시킬 하나의 방법?
     //아니면 아예 html 로드 방식을 바꿔버려?
     var title = req.body.title;
