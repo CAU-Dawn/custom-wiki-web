@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <%include ../partials/stylesheet %>
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="page-header">
+            <h1>Door ISWIKI</h1>
+        </div>
+        <div class="notice">
+            <!--에디터와 동일. 단 타이틀이 notice-->
+            <form class="notice-form" action="" method="post">
+                <div id="editor">
+                </div>
+            </form>
+        </div>
+        <div class="recent-changes">
+            <!--동적으로 recent-changes control-->
+            <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
+        </div>
+    </div>
+    <script type="text/javascript">
+        BalloonEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( editor => {
+                console.log( editor );
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+</body>
+</html>
