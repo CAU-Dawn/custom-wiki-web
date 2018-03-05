@@ -16,12 +16,15 @@
             <!--에디터와 동일. 단 타이틀이 notice-->
             <form class="notice-form" action="" method="post">
                 <div id="editor">
+                    <!--ejs변수가 들어가 있어서, db에서 title이 notice인 data를 render시 글어와야함-->
+                    <%= data%>
                 </div>
             </form>
         </div>
         <div class="recent-changes">
             <!--동적으로 recent-changes control-->
             <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
+            <%= change-data%>
         </div>
     </div>
     <script type="text/javascript">

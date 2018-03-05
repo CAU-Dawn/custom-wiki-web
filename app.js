@@ -25,8 +25,8 @@ mongoose.connect('mongodb://localhost:27017');
 
 
 //routes로 연결해주거나, 여기서 routing하거나
-app.use('/', index);
-//app.use('/users', users);
+app.use('/', index); //이거 일케 하는거 맞나? Q.
+app.use('/create', index);
 //app.get('/comments', comments.hasAuthorization, comments.list);
 //app.post('/comments', comments.hasAuthorization, comments.create);
 
