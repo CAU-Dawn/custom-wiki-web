@@ -3,10 +3,12 @@ var router = express.Router();
 var wikicon = require('../controllers/wikicon');
 var Wikis = require('../models/wiki');
 
-router.get('/', function(req, res, next){ //index 페이지를 만들기위해서 create페이지를 먼저 만들어보려고.
+router.get('/', function(req, res, next){
+    //index 페이지를 만들기위해서 create페이지를 먼저 만들어보려고.
     Wikis.findOne({title: 'Door'}, function(err, book){
-        if(err) return res.status(500).json({error: err}); //에러페이지로 전환.
-        if(!wiki) return res.status(404).json({error: 'wiki not found'});
+        if(err) return res.status(500).json({error: err});
+        //에러페이지로 전환.
+        //if(!wiki) return res.status(404).json({error: 'wiki not found'});
         res.render('index', {
             title: 'Door',
             //data: wiki //이부분 wiki잡아내기.
@@ -14,7 +16,8 @@ router.get('/', function(req, res, next){ //index 페이지를 만들기위해�
         });
     });
 })
-router.post('/', wikicon.edit ); //초기render를 get으로 받고, ajax요청을 post로 받으려고 이렇게 routing을 분기함.
+router.post('/', wikicon.edit );
+//초기render를 get으로 받고, ajax요청을 post로 받으려고 이렇게 routing을 분기함.
 
 router.get('/create', function(req, res, next){
     res.render('create', {

@@ -19,32 +19,39 @@
             <!--type에서 submit으로 해야할지, button으로 해야할지..-->
             <div id="editor">
                 <h1 id="h1title">input title here.</h1>
-                <!-- h1을 잡아내질 못하네.., 그리고 id도 editor안으로 들어가버리면 잡아내질 못하네-->
                 <!--ejs변수가 들어가 있어서, db에서 title이 notice인 data를 render시 글어와야함-->
             </div>
         </div>
     </div>
     <script type="text/javascript">
-    // editor객체 문제.
     var edit = function(){
-        BalloonEditor
-            .create( document.querySelector( '#editor' ) )
-            .then( editor => {
-                console.log( editor );
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
+            BalloonEditor
+               .create( document.querySelector( '#editor' ), {
+                   heading: {
+                       options: [{modelElement: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' }]
+                   } //이게 editor내에 어떤 html 태그에 class가 입혀지는게 아니라, div editor에 씌여지는데?
+               })
+               .then( editor => {
+                    theEditor = editor;
+               })
+               .catch( error => {
+                    console.error( error );
+               });
+
+                function getDataFromTheEditor() {
+                   return theEditor.getData();
+               };
     };
     var preview = function(){
-        editor.destroy() //editor객체가 뭔질 모르겠네 이것땜에 function처리가 안돼.
+        theEditor.destroy()
             .catch( error => {
                 console.log( error);
-            } );
+            });
     };
     var submit = function(){
-        var data = editor.getData();
-        console.log($('#h1title').val()); //title 발췌 확인.
+        var data = theEditor.getData();
+        console.log(data);
+        //title 발췌작업.
         $.ajax({
             url: '/create',
             type: 'post',
@@ -54,7 +61,7 @@
             {
                 console.log(result);
                 if ( result.status == 1 ) {
-                    editor.destroy()
+                    theEditor.destroy()
                         .catch( error => {
                             console.log( error);
                         } );

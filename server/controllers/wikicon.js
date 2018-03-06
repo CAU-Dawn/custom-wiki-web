@@ -11,7 +11,6 @@ exports.edit = function(req, res){
             res.status(500).send('update error');
             return;
         }
-
     })
 //미완.
 //여기서 ajax render.
