@@ -31,6 +31,7 @@ exports.create = function(req, res){
             return;
         }
         res.render('create',{
+            title : 'Created',
             data : wiki.data,
             status : 1
         });

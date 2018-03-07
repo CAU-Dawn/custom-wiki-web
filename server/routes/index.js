@@ -21,7 +21,8 @@ router.post('/', wikicon.edit );
 
 router.get('/create', function(req, res, next){
     res.render('create', {
-        title: 'Create'
+        title: 'Create',
+        data: 'Hello'
     });
     //초기 render와 ajax 후 render의 문제.
     // 현재 mongoose find query로 초기 render를 할 생각.
