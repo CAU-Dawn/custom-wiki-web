@@ -14,12 +14,9 @@
         </div>
         <div class="create-editor">
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
-            <button id="preview" class="btn btn-primary" onclick="preview()" type="button">Preview</button>
             <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
-            <!--type에서 submit으로 해야할지, button으로 해야할지..-->
             <div id="editor">
-                <h1 id="h1title">input title here.</h1>
-                <!--ejs변수가 들어가 있어서, db에서 title이 notice인 data를 render시 글어와야함// create page에는 필요가 없고, index page에는 필요함.-->
+                <h2>input title please</h2>
                 <%= data %>
             </div>
         </div>
@@ -27,46 +24,35 @@
     <script type="text/javascript">
     var edit = function(){
             BalloonEditor
-               .create( document.querySelector( '#editor' ), {
-                   heading: {
-                       options: [{modelElement: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' }]
-                   } //이게 editor내에 어떤 html 태그에 class가 입혀지는게 아니라, div editor에 씌여지는데?
-               })
+               .create( document.querySelector( '#editor' ) )
                .then( editor => {
                     theEditor = editor;
                })
                .catch( error => {
                     console.error( error );
                });
-
                 function getDataFromTheEditor() {
                    return theEditor.getData();
                };
     };
-    var preview = function(){
-        theEditor.destroy()
-            .catch( error => {
-                console.log( error);
-            });
-    };
     var submit = function(){
         var data = theEditor.getData();
+        var title = $("#editor h2").text();
         console.log(data);
-        //title 발췌작업.
+        console.log(title);
         $.ajax({
             url: '/create',
             type: 'post',
-            data: {"contents": data, /*"title": $('#title').val()*/},
+            data: {"contents": data, "title": title},
             dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
+            success: function(result)
             {
                 console.log(result);
                 if ( result.status == 1 ) {
                     theEditor.destroy()
                         .catch( error => {
                             console.log( error);
-                        } );
-                    //controller render로 처리.
+                        });
                 } else {
 
                 }

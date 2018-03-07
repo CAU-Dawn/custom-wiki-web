@@ -1,11 +1,9 @@
-//var  = require( '@ckeditor/ckeditor5-build-balloon' )
 var Wikis = require('../models/wiki');
 
-//바디파서 로드 여기선 로드 안해도 되나? exports.를 자세히 모르겠네..
 exports.edit = function(req, res){
     var title = req.body.title;
     var contents = req.body.contents;
-    Wikis.findOne({'title':title},function(err,wiki){
+    Wikis.findOne({'title':title}, function(err,wiki){
         if(err){
             console.log(err);
             res.status(500).send('update error');
