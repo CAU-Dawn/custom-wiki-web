@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var wikicon = require('../controllers/wikicon');
 var Wikis = require('../models/wiki');
+var jsdom = require('jsdom');
+var window = jsdom.jsdom().createWindow();
+var $ = require('jquery')(window);
 
 router.get('/', function(req, res, next){
     Wikis.findOne({title: 'Door'}, function(err, wiki){
