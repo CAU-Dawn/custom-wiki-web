@@ -13,12 +13,10 @@
             <h1>Door ISWIKI</h1>
         </div>
         <div class="notice">
-            <!--에디터와 동일. 단 타이틀이 notice-->
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
             <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
             <div id="editor">
-                <!--ejs변수가 들어가 있어서, db에서 title이 notice인 data를 render시 끌어와야함// create page에는 필요가 없고, index page에는 필요함.-->
-                <%= data %>
+                <%-data %>
             </div>
         </div>
         <div class="recent-changes">
@@ -51,7 +49,7 @@
             type: 'post',
             data: {"contents": data, "title": title},
             dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
+            success: function(result)
             {
                 console.log(result);
                 if ( result.status == 1 ) {

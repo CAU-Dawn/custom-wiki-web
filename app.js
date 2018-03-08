@@ -23,8 +23,7 @@ db.once('open', function(){
 });
 mongoose.connect('mongodb://localhost:27017');
 
-
-app.use('/', index); //이거 일케 하는거 맞나? Q.
+app.use('/', index);
 app.use('/create', index);
 //app.get('/comments', comments.hasAuthorization, comments.list);
 //app.post('/comments', comments.hasAuthorization, comments.create);
