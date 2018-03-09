@@ -18,7 +18,6 @@
             <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
             <div id="editor">
                 <!--ejs변수가 들어가 있어서, db에서 title이 notice인 data를 render시 끌어와야함// create page에는 필요가 없고, index page에는 필요함.-->
-                
                 <%- data %>
             </div>
         </div>
@@ -26,14 +25,39 @@
             <div class="page-header">
                 <h3>Recent Changes</h3>
             </div>
-            
             <!--동적으로 recent-changes control-->
             <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
-            <% include recentchange %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%if(contents.length>0){%>
+                    <%var i = 0;%>
+                    <%contents.forEach(function(item){%>
+                    <%i++;%>
+                    <tr>
+                        <td class="number"><%=i%></td>
+                        <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+                        <td class="date"><%=item.date%></td>
+                        <td class="date"></td>
+                    </tr>
+                    <%})%>
+                    <%} else {%>
+                    <tr>
+                        <td colspan="5">게시물이 없습니다.</td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
         </div>
     </div>
     <script type="text/javascript">
-   
+
     var edit = function(){
         BalloonEditor
            .create( document.querySelector( '#editor' ) )

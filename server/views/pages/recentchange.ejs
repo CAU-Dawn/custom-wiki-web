@@ -1,27 +1,56 @@
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Title</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-    <%if(contents.length>0){%>
-        <%var i = 0;%>
-        <%contents.forEach(function(item){%>
-        <%i++;%>
-        <tr>
-            <td class="number"><%=i%></td>
-            <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
-            <td class="date"><%=item.date%></td>
-            <td class="date"></td> 
-        </tr>
-        <%})%>
-        <%} else {%>
-        <tr>
-            <td colspan="5">게시물이 없습니다.</td>
-        </tr>
-    <%}%>
-    </tbody>
-</table>
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <%include ../partials/stylesheet %>
+    <% include ../partials/ck %>
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="page-header">
+            <h1>Recent Changes</h1>
+        </div>
+        <div class="changes">
+        <div class="recent-changes">
+            <!--동적으로 recent-changes control-->
+            <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%if(contents.length>0){%>
+                    <%var i = 0;%>
+                    <%contents.forEach(function(item){%>
+                    <%i++;%>
+                    <tr>
+                        <td class="number"><%=i%></td>
+                        <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+                        <td class="date"><%=item.date%></td>
+                        <td class="date"></td>
+                    </tr>
+                    <%})%>
+                    <%} else {%>
+                    <tr>
+                        <td colspan="5">게시물이 없습니다.</td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    </script>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+
+</body>
+</html>

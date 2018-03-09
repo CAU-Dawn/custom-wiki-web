@@ -25,8 +25,8 @@ mongoose.connect('mongodb://localhost:27017');
 
 app.use('/', index);
 app.use('/create', index);
-//app.get('/comments', comments.hasAuthorization, comments.list);
-//app.post('/comments', comments.hasAuthorization, comments.create);
+app.use('/search', index);
+app.use('//recentchange', index);
 
 
 module.exports = app;

@@ -36,6 +36,21 @@ router.get('/create', function(req, res, next){
 });
 router.post('/create', wikicon.create);
 
+router.get('/search', function(req, res){
+   var search_word = req.param('searchWord');
+   var searchCondition = {$regex:search_word};
+   Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({date:-1}).exec(function(err, searchContents){
+       if(err) throw err;
+       res.render('search', {title: "Board", contents: searchContents});
+   });
+});
+
+router.get('/recentchange', function(req, res){
+    Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
+    res.render('recentchange', {title:"Recent changes", contents: wikis});
+    })
+})
+
 /*
 app.get('/searech/:wiki_title', function(req, res){
     Wikis.findOne({title: req.params.wiki_title}, function(err, wiki){
