@@ -42,7 +42,7 @@
                     <%i++;%>
                     <tr>
                         <td class="number"><%=i%></td>
-                        <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+                        <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
                         <td class="date"><%=item.date%></td>
                         <td class="date"></td>
                     </tr>
@@ -72,9 +72,9 @@
            };
     };
     var submit = function(){
-        var data = theEditor.getData();
+        var contents = theEditor.getData();
         var title = $("#editor h2").text();
-        console.log(data);
+        console.log(contents);
         console.log(title);
         $.ajax({
             url: '/',

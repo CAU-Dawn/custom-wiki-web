@@ -41,7 +41,7 @@ router.get('/search', function(req, res){
    var searchCondition = {$regex:search_word};
    Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({date:-1}).exec(function(err, searchContents){
        if(err) throw err;
-       res.render('search', {title: "Board", contents: searchContents});
+       res.render('search', {title: "Searched", contents: searchContents});
    });
 });
 
@@ -49,6 +49,27 @@ router.get('/recentchange', function(req, res){
     Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
     res.render('recentchange', {title:"Recent changes", contents: wikis});
     })
+})
+
+router.get('/show', function(req, res){
+    console.log(req.param('id'));
+    var paramtitle = req.param('id');
+
+        Wikis.findOne({title: paramtitle}, function(err, wiki){
+            if(err){
+                console.log('err');
+
+                 return res.status(500).json({error: err})}; //에러페이지로 전환.
+                 if(!wiki) return res.status(404).json({error: 'wiki not found'});
+
+        res.render('show', {
+            title: wiki.title,
+            data : wiki.contents
+        });
+        // board.ejs의 title변수엔 “Board”를, contents변수엔 db 검색 결과 json 데이터를 저장해줌.
+        });
+
+
 })
 
 /*

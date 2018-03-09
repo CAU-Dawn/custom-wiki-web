@@ -3,14 +3,14 @@ var Wikis = require('../models/wiki');
 exports.edit = function(req, res){
     Wikis.findOne({'title': 'Door'}, function(err,wiki){ //후에 id작업.
         var title = req.body.title;
-        var contents = req.body.contents;
+        var newcon = req.body.contents;
         if(err){
             console.log(err);
             res.status(500).send('update error');
             return;
         }
 
-        wiki.contents = contents;
+        wiki.contents = newcon;
         console.log(wiki.contents);
 
         wiki.save(function(err){
@@ -22,7 +22,6 @@ exports.edit = function(req, res){
             })
         });
     })
-//미완.
 //여기서 ajax render.
 };
 
