@@ -1,0 +1,27 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    <%if(contents.length>0){%>
+        <%var i = 0;%>
+        <%contents.forEach(function(item){%>
+        <%i++;%>
+        <tr>
+            <td class="number"><%=i%></td>
+            <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+            <td class="date"><%=item.date%></td>
+            <td class="date"></td> 
+        </tr>
+        <%})%>
+        <%} else {%>
+        <tr>
+            <td colspan="5">게시물이 없습니다.</td>
+        </tr>
+    <%}%>
+    </tbody>
+</table>

@@ -10,14 +10,14 @@ exports.edit = function(req, res){
             return;
         }
 
-        wiki.data = contents;
-        console.log(wiki.data);
+        wiki.contents = contents;
+        console.log(wiki.contents);
 
         wiki.save(function(err){
             if(err) res.status(500).json({error: 'failed to update'});
             res.render('index', {
                 title: 'Door',
-                data: wiki.data,
+                data: wiki.contents,
                 changes: 'recent changes' //수정.
             })
         });
@@ -31,8 +31,8 @@ exports.create = function(req, res){
     var wiki = new Wikis();
     wiki.title = req.body.title;
     //wiki.author = req.body.author;
-    wiki.data = req.body.contents;
-    wiki.edited_date = new Date();
+    wiki.contents = req.body.contents;
+    wiki.date = new Date();
     wiki.save(function(err){
         if(err){
             console.error(err);
@@ -42,7 +42,7 @@ exports.create = function(req, res){
         }
         res.render('create',{
             title : 'Created',
-            data : wiki.data,
+            data : wiki.contents,
             status : 1
         });
         console.log({status: 1});

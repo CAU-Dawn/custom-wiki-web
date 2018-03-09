@@ -17,7 +17,6 @@
             <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
             <div id="editor">
                 <h2>input title please</h2>
-                <%= data %>
             </div>
         </div>
     </div>
@@ -36,14 +35,14 @@
                };
     };
     var submit = function(){
-        var data = theEditor.getData();
+        var contents = theEditor.getData();
         var title = $("#editor h2").text();
-        console.log(data);
+        console.log(contents);
         console.log(title);
         $.ajax({
             url: '/create',
             type: 'post',
-            data: {"contents": data, "title": title},
+            data: {"contents": contents, "title": title},
             dataType: 'JSON',
             success: function(result)
             {
