@@ -1,14 +1,26 @@
 var Wikis = require('../models/wiki');
 
 exports.edit = function(req, res){
-    var title = req.body.title;
-    var contents = req.body.contents;
-    Wikis.findOne({'title':title}, function(err,wiki){
+    Wikis.findOne({'title': 'Door'}, function(err,wiki){ //후에 id작업.
+        var title = req.body.title;
+        var contents = req.body.contents;
         if(err){
             console.log(err);
             res.status(500).send('update error');
             return;
         }
+
+        wiki.data = contents;
+        console.log(wiki.data);
+
+        wiki.save(function(err){
+            if(err) res.status(500).json({error: 'failed to update'});
+            res.render('index', {
+                title: 'Door',
+                data: wiki.data,
+                changes: 'recent changes' //수정.
+            })
+        });
     })
 //미완.
 //여기서 ajax render.

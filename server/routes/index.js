@@ -11,7 +11,7 @@ router.get('/', function(req, res, next){
         res.render('index', {
             title: 'Door',
             data: wiki.data ,
-            changes : 'recent changes'
+            changes : 'recent changes' //수정.
         });
     });
 });
