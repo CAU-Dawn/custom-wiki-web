@@ -38,11 +38,12 @@
                     <%var i = 0;%>
                     <%contents.forEach(function(item){%>
                     <%i++;%>
+                    <%if(i>6) return %>
                     <tr>
                         <td class="number"><%=i%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
                         <td class="date"><%=item.date%></td>
-                        <td class="date"></td>
+
                     </tr>
                     <%})%>
                     <%} else {%>

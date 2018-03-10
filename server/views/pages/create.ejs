@@ -48,12 +48,13 @@
             {
                 console.log(result);
                 if ( result.status == 1 ) {
+                    location.replace("/show?id="+result.newtitle);
+                } else {
+                    alert('wiki title already exists.');
                     theEditor.destroy()
                         .catch( error => {
                             console.log( error);
                         });
-                } else {
-
                 }
             }
          })

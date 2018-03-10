@@ -24,19 +24,27 @@ exports.edit = function(req, res){
 };
 
 exports.create = function(req, res){
-    console.log(req.body);
-    var wiki = new Wikis();
-    wiki.title = req.body.title;
-    //wiki.author = req.body.author;
-    wiki.contents = req.body.contents;
-    wiki.date = new Date();
-    wiki.save(function(err){
-        if(err){
-            console.error(err);
-            res.render({status: 0});
-            console.log({status: 0});
-            return;
+    Wikis.findOne({'title': req.body.title}, function(err,wiki){
+        var ranstat = Math.floor(Math.random()*10);
+        if(wiki) {
+            return res.send({status:ranstat})
+        } else {
+            console.log(req.body);
+            var wiki = new Wikis();
+            wiki.title = req.body.title;
+            //wiki.author = req.body.author;
+            wiki.contents = req.body.contents;
+            wiki.date = new Date();
+            wiki.save(function(err){
+                if(err){
+                    console.error(err);
+                    res.render({status: 0});
+                    console.log({status: 0});
+                    return;
+                }
+                res.send({status:1, newtitle: req.body.title});
+            });
         }
-        res.send({status:1});
     });
+
 };
