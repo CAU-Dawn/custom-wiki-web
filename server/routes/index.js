@@ -58,14 +58,14 @@ router.get('/show', function(req, res){
         Wikis.findOne({title: paramtitle}, function(err, wiki){
             if(err){
                 console.log('err');
+                return res.status(500).json({error: err})
+             }; //에러페이지로 전환.
+            if(!wiki) return res.status(404).json({error: 'wiki not found'});
 
-                 return res.status(500).json({error: err})}; //에러페이지로 전환.
-                 if(!wiki) return res.status(404).json({error: 'wiki not found'});
-
-        res.render('show', {
-            title: wiki.title,
-            data : wiki.contents
-        });
+            res.render('show', {
+                title: wiki.title,
+                data : wiki.contents
+            });
         // board.ejs의 title변수엔 “Board”를, contents변수엔 db 검색 결과 json 데이터를 저장해줌.
         });
 

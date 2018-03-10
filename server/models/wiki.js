@@ -6,9 +6,8 @@ var wikiSchema = new mongoose.Schema({
     author: String,
     contents: Object,
     date: { type: Date, default: Date.now },
-    updated:[{contents:String, date:{type:Date, default:Date.now}}],
     deleted : {type: Boolean, default:false}
-    
+
     //모델링 디테일하게 바꿀것을 아래와 같다.
     /*
     time: {

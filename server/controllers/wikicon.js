@@ -1,28 +1,26 @@
 var Wikis = require('../models/wiki');
 
 exports.edit = function(req, res){
-    Wikis.findOne({'title': 'Door'}, function(err,wiki){ //후에 id작업.
+    Wikis.findOne({'title': req.body.title}, function(err,wiki){
+        if(!wiki) return res.status(404).json({error: 'wiki not exists'});
         var title = req.body.title;
         var newcon = req.body.contents;
+        wiki.date = new Date();
         if(err){
             console.log(err);
             res.status(500).send('update error');
             return;
         }
+         //title자체가 바껴서 넘어오는 요청은 오류띄워야함.
 
         wiki.contents = newcon;
         console.log(wiki.contents);
 
         wiki.save(function(err){
             if(err) res.status(500).json({error: 'failed to update'});
-            res.render('index', {
-                title: 'Door',
-                data: wiki.contents,
-                changes: 'recent changes' //수정.
-            })
+            res.send({status:1});
         });
     })
-//여기서 ajax render.
 };
 
 exports.create = function(req, res){
@@ -39,13 +37,6 @@ exports.create = function(req, res){
             console.log({status: 0});
             return;
         }
-        res.render('create',{
-            title : 'Created',
-            data : wiki.contents,
-            status : 1
-        });
-        console.log({status: 1});
+        res.send({status:1});
     });
-//대충완.
-//여기서 ajax render.
 };
