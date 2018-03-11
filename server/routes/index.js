@@ -46,9 +46,19 @@ router.get('/search', function(req, res){
 });
 
 router.get('/recentchange', function(req, res){
-    Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
-    res.render('recentchange', {title:"Recent changes", contents: wikis});
-    })
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*10;
+    var limitSize = 10;
+    var pageNum = 1;
+    Wikis.count({deleted:false},function(err, totalCount){
+        if(err) throw err;
+        pageNum = Math.ceil(totalCount/limitSize);
+        Wikis.find({deleted:false}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, pageContents) {
+            if(err) throw err;
+            res.render('recentchange', {title: "Recent changes", contents: pageContents, pagination: pageNum});
+        });
+    });
 })
 
 router.get('/show', function(req, res){
@@ -66,20 +76,7 @@ router.get('/show', function(req, res){
                 title: wiki.title,
                 data : wiki.contents
             });
-        // board.ejs의 title변수엔 “Board”를, contents변수엔 db 검색 결과 json 데이터를 저장해줌.
         });
-
-
 })
-
-/*
-app.get('/searech/:wiki_title', function(req, res){
-    Wikis.findOne({title: req.params.wiki_title}, function(err, wiki){
-        if(err) return res.status(500).json({error: err});
-        if(!wiki) return res.status(404).json({error: 'wiki not found'});
-        res.json(wiki);
-    })
-});
-*/
 
 module.exports = router;

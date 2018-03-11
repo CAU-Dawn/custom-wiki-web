@@ -38,9 +38,9 @@
                     <%var i = 0;%>
                     <%contents.forEach(function(item){%>
                     <%i++;%>
-                    <%if(i>6) return %>
+                    <%if(i>5) return %>
                     <tr>
-                        <td class="number"><%=i%></td>
+                        <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
                         <td class="date"><%=item.date%></td>
 

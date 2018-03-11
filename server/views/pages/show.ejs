@@ -17,6 +17,13 @@
     </div>
 
     <script type="text/javascript">
+   function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     var edit = function(){
         BalloonEditor
            .create( document.querySelector( '#editor' ) )
@@ -35,10 +42,12 @@
         var title = $("#editor h2").text();
         console.log(contents);
         console.log(title);
+        var path = getParameterByName('id') // param의 id값 받기
+        console.log(path);
         $.ajax({
             url: '/',
             type: 'post',
-            data: {"contents": contents, "title": title},
+            data: {"contents": contents, "title": title, "path":path},
             dataType: 'JSON',
             success: function(result) //result객체 반환 되는거 봐야함.
             {
@@ -50,6 +59,11 @@
                         } );
                     //controller render로 처리.
                 } else {
+                    alert("title 이름 변경 에러 title 이름을 고정 시켜주세요")
+                    theEditor.destroy()
+                        .catch( error => {
+                            console.log( error);
+                        } );
                 }
             }
          })
