@@ -11,6 +11,7 @@
     <div class="container">
         <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
         <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
+        <button id="delete" class="btn btn-primary" onclick="del()" type="button">Delete</button>
         <div id="editor">
             <%- data %>
         </div>
@@ -68,10 +69,41 @@
             }
          })
     };
+    var del = function(){
+        if(confirm("Are u sure?") == true){
+            var title = $("#editor h2").text();
+            var path = getParameterByName('id');
+            console.log(title, path);
+            $.ajax({
+                url: '/delete',
+                type: 'post',
+                data: {"title": title, "path":path},
+                dataType: 'JSON',
+                success: function(result)
+                {
+                    console.log(result);
+                    if ( result.status == 1 ) {
+                        alert("Delete Complete.");
+                        location.replace("/");
+                    } else {
+                        alert("Do not change title!!!");
+                        theEditor.destroy()
+                            .catch( error => {
+                                console.log( error);
+                            } );
+                    }
+                }
+             })
+            } else {
+              alert("Good job. baby.");
+          }
+    };
+
     </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
+
 
 </body>
 </html>

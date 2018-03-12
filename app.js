@@ -27,6 +27,7 @@ app.use('/', index);
 app.use('/create', index);
 app.use('/search', index);
 app.use('/recentchange', index);
+app.use('/delete', index);
 
 
 module.exports = app;

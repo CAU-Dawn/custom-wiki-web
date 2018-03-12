@@ -19,6 +19,12 @@
                 <h2>input title please</h2>
             </div>
         </div>
+        <div>
+           <input type = "checkbox" id="checkBox" onClick="password()">비밀번호
+           <div id="passwordBox" style="display:none">
+               <h4 >Password:<input type ="password" id="password"></h4>
+           </div>
+       </div>
     </div>
     <script type="text/javascript">
     var edit = function(){
@@ -42,7 +48,7 @@
         $.ajax({
             url: '/create',
             type: 'post',
-            data: {"contents": contents, "title": title},
+            data: {"contents": contents, "title": title, "password": password},
             dataType: 'JSON',
             success: function(result)
             {
@@ -59,10 +65,25 @@
             }
          })
     };
+    var password = function(){
+       var checkBox = document.getElementById("checkBox")
+       var password = document.getElementById("passwordBox")
+
+       if(checkBox.checked == true){
+           password.style.display = "block"
+       } else
+           password.style.display = "none"
+       }
     </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
+
+    <script>
+       $('#password').on("input", function(){
+               password = $(this).val();
+           });
+   </script>
 
 </body>
 </html>

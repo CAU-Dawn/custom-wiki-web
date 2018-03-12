@@ -79,4 +79,6 @@ router.get('/show', function(req, res){
         });
 })
 
+router.post('/delete', wikicon.delete);
+
 module.exports = router;
