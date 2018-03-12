@@ -11,10 +11,4 @@ var wikiSchema = new mongoose.Schema({
     deleted : {type: Boolean, default:false}
 })
 
-var manageSchema = new mongoose.Schema({
-    title: String,
-    totalcount: Number
-})
-
 module.exports = mongoose.model('Wikis', wikiSchema);
-module.exports = mongoose.model('Manage', manageSchema);
