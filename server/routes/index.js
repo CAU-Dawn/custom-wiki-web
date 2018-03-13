@@ -81,4 +81,8 @@ router.get('/show', function(req, res){
 
 router.post('/delete', wikicon.delete);
 
+router.post('/existPw', wikicon.existPw);
+
+router.post('/checkPw', wikicon.checkPw);
+
 module.exports = router;

@@ -13,8 +13,8 @@
             <h1>ISWIKI</h1>
         </div>
         <div class="notice">
-            <button id="edit" class="btn btn-primary" onclick="edit()" type="button">Edit</button>
-            <button id="submit" class="btn btn-primary" onclick="submit()" type="button">Submit</button>
+            <button id="edit" class="btn btn-primary" onclick="edit()" type="button" style="display:inline">Edit</button>
+            <button id="submit" class="btn btn-primary" onclick="submit()" type="button" style="display:none">Submit</button>
             <div id="editor">
                 <%- data %>
             </div>
@@ -43,7 +43,6 @@
                         <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
                         <td class="date"><%=item.date%></td>
-
                     </tr>
                     <%})%>
                     <%} else {%>
@@ -58,6 +57,8 @@
     <script type="text/javascript">
 
     var edit = function(){
+        var submit_button = document.getElementById("submit");
+        submit_button.style.display = "inline";
         BalloonEditor
            .create( document.querySelector( '#editor' ) )
            .then( editor => {
@@ -69,8 +70,14 @@
             function getDataFromTheEditor() {
                return theEditor.getData();
            };
+           var edit_button = document.getElementById("edit");
+           edit_button.style.display = "none";
     };
     var submit = function(){
+        var edit_button = document.getElementById("edit");
+        edit_button.style.display = "inline";
+        var submit_button = document.getElementById("submit");
+        submit_button.style.display = "none";
         var contents = theEditor.getData();
         var title = $("#editor h2").text();
         console.log(contents);

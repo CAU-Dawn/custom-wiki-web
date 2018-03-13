@@ -80,3 +80,22 @@ exports.delete = function(req, res){
         res.send({status:404});
     }
 };
+
+exports.existPw = function(req, res){
+    Wikis.findOne({title:req.body.path}, function(err, wiki){
+        console.log(wiki.password);
+        if(wiki.password == null)
+            res.send({status:1}); // password가 존재하지 않을 시 1을 반환
+        else
+            res.send({status:3}); // password가 존재할 시 3을 반환
+    })
+}
+
+exports.checkPw = function(req, res){
+    Wikis.findOne({title: req.body.path}, function(err, wiki){
+        if(wiki.password == req.body.password)
+            res.send({status:1}); // 패스워드 성공
+        else
+            res.send({status:4}); // 패스워드 실패
+    })
+}
