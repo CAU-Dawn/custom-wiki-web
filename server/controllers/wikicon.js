@@ -1,8 +1,8 @@
 var Wikis = require('../models/wiki');
-var Manage = require('../models/manage');
+var Manages = require('../models/manage');
 
 exports.edit = function(req, res){
-    if(req.body.path == req.body.title || req.body.title == 'Door'){ // param의 id 값과 title명 비교
+    if(req.body.path == req.body.title || req.body.title == 'Door'){
         Wikis.findOne({'title': req.body.title}, function(err,wiki){
             console.log(req.body.path);
             if(!wiki) return res.status(404).json({error: 'wiki does not exist'});
@@ -28,7 +28,9 @@ exports.edit = function(req, res){
 
 exports.create = function(req, res){
     //title 검사 로직 구현안돼있음.
-    Manage.findOne({'title': 'manager1'},function(err, manage){
+    Manages.findOne({title: 'manager1'},function(err, manage){
+        console.log(manage);
+        console.log(manage.number);
         Wikis.findOne({'title': req.body.title}, function(err, wiki){
             if(wiki) {
                 return res.send({status:404})
@@ -39,7 +41,7 @@ exports.create = function(req, res){
                     wiki.password = req.body.password;
                 }
                 wiki.title = req.body.title;
-                wiki.number = manage.totalcount;
+                wiki.number = manage.number;
                 //wiki.author = req.body.author;
                 wiki.contents = req.body.contents;
                 wiki.date = new Date();
@@ -53,7 +55,7 @@ exports.create = function(req, res){
                     }
                     res.send({status:1, newtitle: req.body.title});
                 });
-                manage.totalcount++;
+                manage.number = manage.number+1;
                 manage.save(function(err){
                     if(err){
                         console.error(err);
@@ -64,6 +66,7 @@ exports.create = function(req, res){
                 })
             }
         });
+
     });
 };
 

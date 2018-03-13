@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var manageSchema = new mongoose.Schema({
     title: String,
-    totalcount: {type: Number, default: 0}
+    number: Number
 })
 
-module.exports = mongoose.model('Manage', manageSchema);
+module.exports = mongoose.model('Manages', manageSchema);
