@@ -43,6 +43,7 @@
     var submit = function(){
         var contents = theEditor.getData();
         var title = $("#editor h2").text();
+        title = title.replace( /(^\s*)|(\s*$)/g, "" );
         console.log(contents);
         console.log(title);
         $.ajax({
