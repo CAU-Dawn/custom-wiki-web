@@ -95,14 +95,11 @@
                         .catch( error => {
                                 console.error( error );
                         });
-                        $("#submit").css("display","inline");
-                        $("#edit").css("display","none");
                 } else {
                    $('#passwordModal').modal('show');
                 }
             }
          })
-
     };
     var submit = function(){
         $("#edit").css("display","inline");
