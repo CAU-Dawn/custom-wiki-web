@@ -9,7 +9,8 @@
                     <li><a href="/list">List</a></li>
                     <li><a href="/recentchange">Changed</a></li>
                     <li><a href="/settings">Settings</a></li>
-                    <li id="active-random"><a href="">Random</a></li>
+                    <li><a href="/trends">Trends</a></li>
+                    <button type="button" id="random" onClick="random()" class="btn btn-outline-secondary">Random</button>
                 </ul>
                 <form class="navbar-form navbar-right" role="search" method="GET" action="/search">
                    <div class="form-group">
@@ -21,4 +22,22 @@
     </div>
 </nav>
 
-<!-- 아무것도 없이 버튼눌렸을때 처리.-->
+<script>
+    var random = function(){
+        $.ajax({
+            url: '/random',
+            type: 'post',
+            dataType: 'JSON',
+            success: function(result)
+            {
+                if(result.status == 1){
+                    location.href ="/show?id="+result.path;
+                } else {
+                    alert("꽝! 없는 페이지입니다.")
+                    location.replace('/');
+                }   
+            }
+        })
+    }
+</script>
+

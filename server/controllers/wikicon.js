@@ -99,3 +99,17 @@ exports.checkPw = function(req, res){
             res.send({status:4}); // 패스워드 실패
     })
 }
+
+exports.random = function(req, res){
+    Manages.findOne({title:'manager1'}, function(err, manage){
+        console.log("위키:  "+manage);
+        var random = Math.floor(Math.random() * manage.number) + 1;
+        Wikis.findOne({number:random}, function(err, wiki){
+            if(!wiki)
+                res.send({status:2});
+            else
+                res.send({status:1, path:wiki.title});
+
+        })
+    })
+}

@@ -9,43 +9,73 @@
 <body>
     <% include ../partials/nav %>
     <div class="container">
-        <button id="edit" class="btn btn-primary" onclick="edit()" type="button" data-toggle="modal" data-target="#exampleModal" style="display:inline">Edit</button>
+        <button id="edit" class="btn btn-primary" onclick="edit()" type="button" style="display:inline">Edit</button>
         <button id="submit" class="btn btn-primary" onclick="submit()" type="button" style="display:none">Submit</button>
-        <button id="delete" class="btn btn-primary" onclick="del()" type="button">Delete</button>
+        <button id="delete" class="btn btn-primary" onclick="del()" type="button" >Delete</button>
         <div id="editor">
             <%- data %>
         </div>
-        <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="passwordModalLabel">Password Checking</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <label class="col-form-label">Password:</label>
-                    <input type="password" class="form-control" id="password">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onClick="checkPw()">Check</button>
-              </div>
+
+
+<!-- edit 눌렀을 시 모달창 -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Password Checking</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="col-form-label">Password:</label>
+            <input type="password" class="form-control" id="password">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onClick="checkPwEdit()">Check</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- delete 눌렀을 시 모달창 -->
+<div class="modal fade" id="modalForDelete" tabindex="-1" role="dialog" aria-labelledby="modalForDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" >Password Checking</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <label class="col-form-label">Password:</label>
+                  <input type="password" class="form-control" id="passwordForDelete">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onClick="checkPwDelete()">Check</button>
             </div>
           </div>
         </div>
+      </div>
+
+
     </div>
 
+
     <script type="text/javascript">
+
    function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    };
+    }
 
-     var checkPw = function(){
+     var checkPwEdit = function(){
         var password = $('#password').val();
         var path = getParameterByName('id')
         $.ajax({
@@ -53,21 +83,22 @@
             type: 'post',
             data: {"path":path, "password":password},
             dataType: 'JSON',
+            async:false,
             success: function(result)
              {
                 if(result.status == 4){
                 alert('password isn\'t right.');
                 location.replace("/show?id="+path);
-            } else {
-                $('#passwordModal').modal('hide');
-                BalloonEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .then( editor => {
-                        theEditor = editor;
-                    })
-                    .catch( error => {
-                        console.error( error );
-                    });
+                } else {
+                    $('#passwordModal').modal('hide');
+                    BalloonEditor
+                        .create( document.querySelector( '#editor' ) )
+                        .then( editor => {
+                            theEditor = editor;
+                        })
+                        .catch( error => {
+                            console.error( error );
+                        });
                     $("#submit").css("display","inline");
                     $("#edit").css("display","none");
                 }
@@ -75,15 +106,59 @@
         })
     }
 
+    var checkPwDelete = function(){
+        var password = $('#passwordForDelete').val();
+        var title = $("#editor h2").text();
+        var path = getParameterByName('id')
+        $.ajax({
+            url: '/checkPw',
+            type: 'post',
+            data: {"path":path, "password":password},
+            dataType: 'JSON',
+            async:false,
+            success: function(result)
+             {
+                if(result.status == 4){
+                alert('password isn\'t right.');
+                location.replace("/show?id="+path);
+                } else {
+
+                    $.ajax({
+                        url: '/delete',
+                        type: 'post',
+                        data: {"title": title, "path":path},
+                        dataType: 'JSON',
+                        async:false,
+                        success: function(result)
+                        {
+                            console.log(result);
+                            if ( result.status == 1 ) {
+                                alert("Delete Complete.");
+                                location.replace("/");
+                            } else {
+                                alert("Do not change title!!!");
+                                theEditor.destroy()
+                                    .catch( error => {
+                                        console.log( error);
+                                    });
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    }
+
     var edit = function(){
         var path = getParameterByName('id')
+
         $.ajax({
             url: '/existPw',
             type: 'post',
             data: {"path":path},
             dataType: 'JSON',
             async:false,
-            success: function(result)
+            success: function(result) //result객체 반환 되는거 봐야함.
             {
                 console.log(result);
                 if(result.status == 1){
@@ -95,11 +170,16 @@
                         .catch( error => {
                                 console.error( error );
                         });
+                    $("#submit").css("display","inline");
+                    $("#edit").css("display","none");
                 } else {
-                   $('#passwordModal').modal('show');
+                    $('#passwordModal').modal();
                 }
+
             }
          })
+
+
     };
     var submit = function(){
         $("#edit").css("display","inline");
@@ -115,8 +195,8 @@
             type: 'post',
             data: {"contents": contents, "title": title, "path":path},
             dataType: 'JSON',
-            async: false,
-            success: function(result)
+
+            success: function(result) //result객체 반환 되는거 봐야함.
             {
                 console.log(result);
                 if ( result.status == 1 ) {
@@ -124,8 +204,9 @@
                         .catch( error => {
                             console.log( error);
                         } );
+                    //controller render로 처리.
                 } else {
-                    alert("title 이름 변경 에러 title 이름을 고정 시켜주세요")
+                    alert("Do not change Title")
                     theEditor.destroy()
                         .catch( error => {
                             console.log( error);
@@ -140,41 +221,52 @@
             var path = getParameterByName('id');
             console.log(title, path);
             $.ajax({
-                url: '/delete',
+                url: '/existPw',
                 type: 'post',
-                data: {"title": title, "path":path},
+                data: {"path":path},
                 dataType: 'JSON',
-                success: function(result)
+                async:false,
+                success: function(result) //result객체 반환 되는거 봐야함.
                 {
                     console.log(result);
-                    if ( result.status == 1 ) {
-                        alert("Delete Complete.");
-                        location.replace("/");
+                    if(result.status == 1){
+                        $.ajax({
+                            url: '/delete',
+                            type: 'post',
+                            data: {"title": title, "path":path},
+                            dataType: 'JSON',
+                            async:false,
+                            success: function(result)
+                            {
+                                console.log(result);
+                                if ( result.status == 1 ) {
+                                    alert("Delete Complete.");
+                                    location.replace("/");
+                                } else {
+                                    alert("Do not change title!!!");
+                                    theEditor.destroy()
+                                        .catch( error => {
+                                            console.log( error);
+                                        } );
+                                }
+                            }
+                        })
                     } else {
-                        alert("Do not change title!!!");
-                        theEditor.destroy()
-                            .catch( error => {
-                                console.log( error);
-                            } );
+                        $('#modalForDelete').modal();
                     }
                 }
-             })
-            } else {
-              alert("Good job. baby.");
-          }
+            })
+        } else {
+            alert("Good job. baby.");
+        }
     };
+
+
 
     </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
-
-    <script>
-        $('#passwordModal').modal({
-            show: false,
-            keyboard: true
-        })
-    </script>
 
 </body>
 </html>

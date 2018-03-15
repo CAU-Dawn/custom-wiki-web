@@ -85,4 +85,6 @@ router.post('/existPw', wikicon.existPw);
 
 router.post('/checkPw', wikicon.checkPw);
 
+router.post('/random', wikicon.random);
+
 module.exports = router;
