@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <%include ../partials/stylesheet %>
+    <% include ../partials/ck %>
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="list">
+        <table class="table table-hover">
+                <%contents.forEach(function(item){%>
+                <tr>
+                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
+                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
+                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
+                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
+                </tr>
+                <%})%>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+    
+    </script>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 
+
+
 exports.edit = function(req, res){
     if(req.body.path == req.body.title || req.body.title == 'Door'){
         Wikis.findOne({'title': req.body.title}, function(err,wiki){

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var wikicon = require('../controllers/wikicon');
+var app = require('./../../app.js');
 var Wikis = require('../models/wiki');
 
 router.get('/', function(req, res, next){
@@ -77,6 +78,15 @@ router.get('/show', function(req, res){
                 data : wiki.contents
             });
         });
+})
+
+router.get('/list',function(req, res){
+    item = Wikis.find({}).sort({'title':1});
+    console.log(item);
+    res.render('list', {
+        title: "List",
+        contents: item
+    });
 })
 
 router.post('/delete', wikicon.delete);

@@ -19,11 +19,9 @@
             </thead>
             <tbody>
             <%if(contents.length>0){%>
-                <%var i = 0;%>
-                <%contents.forEach(function(item){%>
-                <%i++;%>
+                <%contents.forEach(function(item){%>                
                 <tr>
-                    <td class="number"><%= i %></td>
+                    <td class="number"><%= item.number %></td>
                     <td class="title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
                     <td class="date"><%= item.date %></td>
                     <td class="date"></td>
