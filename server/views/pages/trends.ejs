@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <%include ../partials/stylesheet %>
+    <% include ../partials/ck %>
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="Trends">
+            <div class="page-header">
+                <h3>최근 10개 트렌드</h3>
+            </div>
+            <div class="row hidden-md-up">
+                <%var i=0;%>
+                <%contents.forEach(function(item){%>
+                <%i++;%>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="page-header ">
+                            <h3>Rank.<%=i%></h3>
+                        </div>
+                    <!--<img class="card-img-top" src="/public/images/number1.jpg" alt="Card image cap">-->
+                    <div class="card-block">
+                        <div id="editor">    
+                            <%-item.title%>
+                        </div>
+                        <a href="/show?id=<%=item.title%>" class="btn btn-primary">Go</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Hot Point : <%=item.count%></small>
+                    </div>
+                    </div>
+                </div>
+                <%})%>
+            
+            </div>
+        </div>            
+    </div>
+    
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+
+</body>
+</html>

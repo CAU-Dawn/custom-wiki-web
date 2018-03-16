@@ -26,9 +26,9 @@
                 </thead>
                 <tbody>
                 <%if(contents.length>0){%>
-                    <%var i = 0;%>
+                    
                     <%contents.forEach(function(item){%>
-                    <%i++;%>
+                    
                     <tr>
                         <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
@@ -43,20 +43,19 @@
                 <%}%>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <%
+                        for(var i=1; i<=pagination; i++){
+                        %>
+                        <li class="page-item"><a class="page-link" href="/recentchange?page=<%=i%>"><%=i%></a></li>
+                        <%}%>
+                    </ul>
+                </nav>
+            </div>
+        
         </div>
     </div>
-    <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
-      <%
-        for(var i=1; i<=pagination; i++){
-        %>
-      <li class="page-item"><a class="page-link" href="/recentchange?page=<%=i%>"><%=i%></a></li>
-      <%}%>
-    </ul>
-  </nav>
-
-    <script type="text/javascript">
-    </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>

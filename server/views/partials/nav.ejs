@@ -1,26 +1,30 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">ISWIKI</a>
+<nav class="navbar navbar-expand-md navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">  
+        <a class="navbar-brand" href="/">ISWIKI</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/list">List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/recentchange">Changed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/trends">Trends</a>
+            </li>
+            <button type="button" id="random" onClick="random()" class="btn btn-outline-secondary">Random</button>
+          </ul>
         </div>
-            <div id="navbar">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Door</a></li>
-                    <li><a href="/list">List</a></li>
-                    <li><a href="/recentchange">Changed</a></li>
-                    <li><a href="/settings">Settings</a></li>
-                    <li><a href="/trends">Trends</a></li>
-                    <button type="button" id="random" onClick="random()" class="btn btn-outline-secondary">Random</button>
-                </ul>
-                <form class="navbar-form navbar-right" role="search" method="GET" action="/search">
-                   <div class="form-group">
-                       <input id="searchWord" name="searchWord" type="text" class="form-control">
-                   </div>
-                   <button type="submit" class="btn btn-default">Search</button>
-               </form>
-            </div>
-    </div>
-</nav>
+        <form class="form-inline " role="search" method="GET" action="/search">
+            <input id="searchWord" name="searchWord" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </nav>
 
 <script>
     var random = function(){

@@ -7,6 +7,7 @@ var wikiSchema = new mongoose.Schema({
     password: {type:String, default:null},
     contents: Object,
     number: { type: Number, default: 0},
+    count: { type: Number, default: 0},
     date: { type: Date, default: Date.now },
     deleted : {type: Boolean, default:false}
 })

@@ -97,9 +97,14 @@
                         } );
                     //controller render로 처리.
                 } else {
+                    alert("Do not change Title")
+                    theEditor.destroy()
+                        .catch( error => {
+                            console.log( error);
+                        } );
                 }
             }
-         })
+        })
     };
     </script>
 

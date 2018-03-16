@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <%include ../partials/stylesheet %>
+    <% include ../partials/ck %>
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <h1>요청하신 페이지를 찾을 수 없습니다.</h1>
+        <h2>페이지를 만드시겠습니까?
+        <button id="create" class="btn btn-primary" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
+    </div>
+    </div>
+    <script type="text/javascript">
+        var tocreate = function(){
+            location.replace("/create");
+        }
+    </script>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+
+</body>
+</html>

@@ -15,8 +15,8 @@
         <div id="editor">
             <%- data %>
         </div>
-
-
+        
+       
 <!-- edit 눌렀을 시 모달창 -->
 <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -62,12 +62,12 @@
         </div>
       </div>
 
-
+        
     </div>
-
+    
 
     <script type="text/javascript">
-
+    
    function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -122,8 +122,8 @@
                 alert('password isn\'t right.');
                 location.replace("/show?id="+path);
                 } else {
-
-                    $.ajax({
+                    
+                    $.ajax({    
                         url: '/delete',
                         type: 'post',
                         data: {"title": title, "path":path},
@@ -151,7 +151,7 @@
 
     var edit = function(){
         var path = getParameterByName('id')
-
+        
         $.ajax({
             url: '/existPw',
             type: 'post',
@@ -171,15 +171,15 @@
                                 console.error( error );
                         });
                     $("#submit").css("display","inline");
-                    $("#edit").css("display","none");
+                    $("#edit").css("display","none"); 
                 } else {
-                    $('#passwordModal').modal();
+                    $('#passwordModal').modal();                        
                 }
-
+                
             }
          })
-
-
+        
+       
     };
     var submit = function(){
         $("#edit").css("display","inline");
@@ -195,7 +195,7 @@
             type: 'post',
             data: {"contents": contents, "title": title, "path":path},
             dataType: 'JSON',
-
+            
             success: function(result) //result객체 반환 되는거 봐야함.
             {
                 console.log(result);
@@ -215,7 +215,7 @@
             }
          })
     };
-    var del = function(){
+    var del = function(){  
         if(confirm("Are u sure?") == true){
             var title = $("#editor h2").text();
             var path = getParameterByName('id');
@@ -230,7 +230,7 @@
                 {
                     console.log(result);
                     if(result.status == 1){
-                        $.ajax({
+                        $.ajax({    
                             url: '/delete',
                             type: 'post',
                             data: {"title": title, "path":path},
@@ -252,8 +252,8 @@
                             }
                         })
                     } else {
-                        $('#modalForDelete').modal();
-                    }
+                        $('#modalForDelete').modal();                  
+                    }    
                 }
             })
         } else {
@@ -261,7 +261,7 @@
         }
     };
 
-
+   
 
     </script>
 

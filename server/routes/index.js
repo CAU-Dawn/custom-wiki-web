@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var wikicon = require('../controllers/wikicon');
-var app = require('./../../app.js');
 var Wikis = require('../models/wiki');
+var Manages = require('../models/manage');
 
 router.get('/', function(req, res, next){
     Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
@@ -40,7 +40,7 @@ router.post('/create', wikicon.create);
 router.get('/search', function(req, res){
    var search_word = req.param('searchWord');
    var searchCondition = {$regex:search_word};
-   Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({date:-1}).exec(function(err, searchContents){
+   Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({title:1}).exec(function(err, searchContents){
        if(err) throw err;
        res.render('search', {title: "Searched", contents: searchContents});
    });
@@ -71,22 +71,28 @@ router.get('/show', function(req, res){
                 console.log('err');
                 return res.status(500).json({error: err})
              }; //에러페이지로 전환.
-            if(!wiki) return res.status(404).json({error: 'wiki not found'});
+            if(!wiki){
+                var search_word = paramtitle;
+                var searchCondition = {$regex:search_word};
+                Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({}).exec(function(err, searchContents){
+                    if(err) throw err;
+                    res.render('search', {title: "Searched", contents: searchContents});
+                });
+            }
+            //return res.status(404).json({error: 'wiki not found'});
+             else{
+                wiki.count+=1;
 
-            res.render('show', {
-                title: wiki.title,
-                data : wiki.contents
-            });
+                wiki.save(function(err){
+                    if(err) throw err;
+                })
+                res.render('show', {
+                    title: wiki.title,
+                    data : wiki.contents
+                
+                });
+            }
         });
-})
-
-router.get('/list',function(req, res){
-    item = Wikis.find({}).sort({'title':1});
-    console.log(item);
-    res.render('list', {
-        title: "List",
-        contents: item
-    });
 })
 
 router.post('/delete', wikicon.delete);
@@ -95,6 +101,24 @@ router.post('/existPw', wikicon.existPw);
 
 router.post('/checkPw', wikicon.checkPw);
 
+router.get('/error', function(req, res){
+    console.log(req.param('id'))
+    res.render('error',{
+        title: 'Error'
+    })
+})
+
 router.post('/random', wikicon.random);
+
+router.get('/trends', function(req, res){
+    var limitSize = 10;
+    Wikis.find({deleted:false}).sort({count:-1}).limit(limitSize).exec(function(err, wiki) {
+        if(err) throw err;
+        res.render('trends', {title: "Trends", contents: wiki});
+    });
+});
+
+
+
 
 module.exports = router;

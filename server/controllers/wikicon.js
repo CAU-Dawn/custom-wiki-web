@@ -1,8 +1,6 @@
 var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 
-
-
 exports.edit = function(req, res){
     if(req.body.path == req.body.title || req.body.title == 'Door'){
         Wikis.findOne({'title': req.body.title}, function(err,wiki){
@@ -111,7 +109,7 @@ exports.random = function(req, res){
                 res.send({status:2});
             else
                 res.send({status:1, path:wiki.title});
-
+            
         })
     })
 }
