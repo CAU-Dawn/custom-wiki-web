@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var path = require('path');
 var index = require('./server/routes/index');
 
+
 var app = express();
 
 
@@ -14,6 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('views', path.join(__dirname, 'server/views/pages'));
 app.set('view engine', 'ejs');
+
+
 
 
 var db = mongoose.connection;
@@ -33,6 +36,6 @@ app.use('/delete', index);
 module.exports = app;
 
 
-http.createServer(app).listen(3000, function(){
-    console.log('Express 서버가 3000번 포트에서 시작됨');
+http.createServer(app).listen(80, function(){
+    console.log('Express 서버가 80번 포트에서 시작됨');
 });

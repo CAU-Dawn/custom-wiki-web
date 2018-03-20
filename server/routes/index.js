@@ -13,13 +13,19 @@ router.get('/', function(req, res, next){
                 console.log('err');
 
                  return res.status(500).json({error: err})}; //에러페이지로 전환.
-                 if(!wiki) return res.status(404).json({error: 'wiki not found'});
+                 if(!wiki) return res.render('index',{
+                    title:"Door",
+                    data : "아무것도 없어요",
+                    contents: wikis,
+                    status:0
+                 });
 
 
         res.render('index', {
             title: "Door",
             data : wiki.contents,
-            contents: wikis
+            contents: wikis,
+            status:1
         });
         // board.ejs의 title변수엔 “Board”를, contents변수엔 db 검색 결과 json 데이터를 저장해줌.
         });
