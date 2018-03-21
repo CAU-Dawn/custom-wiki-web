@@ -126,6 +126,22 @@ router.get('/show', function(req, res){
         });
 })
 
+router.get('/list', function(req, res){
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*10;
+    var limitSize = 10;
+    var pageNum = 1;
+    Wikis.count({deleted:false},function(err, totalCount){
+        if(err) throw err;
+        pageNum = Math.ceil(totalCount/limitSize);
+        Wikis.find({deleted:false}).sort({number:-1}).skip(skipSize).limit(limitSize).exec(function(err, pageContents) {
+            if(err) throw err;
+            res.render('list', {title: "List", contents: pageContents, pagination: pageNum});
+        });
+    });
+})
+
 router.post('/delete', wikicon.delete);
 
 router.post('/existPw', wikicon.existPw);

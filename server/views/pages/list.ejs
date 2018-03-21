@@ -8,22 +8,54 @@
 </head>
 <body>
     <% include ../partials/nav %>
-    <div class="list">
-        <table class="table table-hover">
-                <%contents.forEach(function(item){%>
-                <tr>
-                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
-                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
-                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
-                    <td class="list-title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
-                </tr>
-                <%})%>
-        </table>
+    <div class="container">
+        <div class="page-header">
+            <h1>모든 글의 목록</h1>
+        </div>
+        <div class="changes">
+        <div class="recent-changes">
+            <!--동적으로 recent-changes control-->
+            <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>Contents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%if(contents.length>0){%>
+                    
+                    <%contents.forEach(function(item){%>
+                    <%item.contents = item.contents.replace(/(<([^>]+)>)/gi, "");%>
+                    <%item.contents = item.contents.replace(/&nbsp;/ig, "");%> 
+                    <tr>
+                        <td class="number"><%=item.number%></td>
+                        <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
+                        <td class="contents"><%=item.contents%></td>
+                    </tr>
+                    <%})%>
+                    <%} else {%>
+                    <tr>
+                        <td colspan="5">게시물이 없습니다.</td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
+            
+            </div>
+            <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <%
+                        for(var i=1; i<=pagination; i++){
+                        %>
+                        <li class="page-item"><a class="page-link" href="/list?page=<%=i%>"><%=i%></a></li>
+                        <%}%>
+                    </ul>
+                </nav>
+        </div>
     </div>
-
-    <script type="text/javascript">
-    
-    </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
