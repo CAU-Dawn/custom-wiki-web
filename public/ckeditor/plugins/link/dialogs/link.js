@@ -42,8 +42,8 @@
 				if ( range.collapsed ) {
 					// Short mailto link text view (https://dev.ckeditor.com/ticket/5736).
 					text = new CKEDITOR.dom.text( data.linkText || ( data.type == 'email' ?
-						data.email.address : attributes.set[ 'data-cke-saved-href' ] ), editor.document );
-					range.insertNode( text );
+						data.email.address : attributes.set[ 'data-cke-saved-href'] ), editor.document );
+					range.insertNode( text);
 					range.selectNodeContents( text );
 				} else if ( initialLinkText !== data.linkText ) {
 					text = new CKEDITOR.dom.text( data.linkText, editor.document );
@@ -367,7 +367,7 @@
 				{
 					type: 'vbox',
 					id: 'anchorOptions',
-					width: 260,
+					width: 60,
 					align: 'center',
 					padding: 0,
 					children: [ {
@@ -382,7 +382,7 @@
 						children: [ {
 							type: 'hbox',
 							id: 'selectAnchor',
-							children: [ {
+							children: [ /*{
 								type: 'select',
 								id: 'anchorName',
 								'default': '',
@@ -415,7 +415,7 @@
 
 									data.anchor.name = this.getValue();
 								}
-							},
+							} , */
 							{
 								type: 'select',
 								id: 'anchorId',

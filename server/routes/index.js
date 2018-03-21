@@ -44,12 +44,37 @@ router.get('/create', function(req, res, next){
 router.post('/create', wikicon.create);
 
 router.get('/search', function(req, res){
-   var search_word = req.param('searchWord');
-   var searchCondition = {$regex:search_word};
-   Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({title:1}).exec(function(err, searchContents){
-       if(err) throw err;
-       res.render('search', {title: "Searched", contents: searchContents});
-   });
+    var search_word = req.param('searchWord');
+    var searchCondition = {$regex:search_word}; // regex의 쓰임새가 무엇?
+
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*5;
+    var limitSize = 5;
+    var pageNum = 1;
+    
+    console.log('title:'+ search_word);
+     // 앞, 뒤 공백 제거
+    if(!search_word){
+        res.render('search', {title: "Searched", page: "", contents: "", pagination:0  })
+    } else {
+        Wikis.findOne({title:search_word}).exec(function(err, wiki){
+            Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
+                .ne('title', search_word)
+                .exec(function(err, totalCount){
+                    pageNum = Math.ceil(totalCount/limitSize);
+                Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
+                    .ne('title', search_word)
+                    .sort({date:-1})
+                    .skip(skipSize)
+                    .limit(limitSize)
+                    .exec(function(err, searchContents){
+                    if(err) throw err;
+                    res.render('search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
+                });
+            });
+        });
+    };
 });
 
 router.get('/recentchange', function(req, res){
@@ -80,14 +105,14 @@ router.get('/show', function(req, res){
             if(!wiki){
                 var search_word = paramtitle;
                 var searchCondition = {$regex:search_word};
-                Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]}).sort({}).exec(function(err, searchContents){
+                Wikis.find({title:searchCondition}).sort({}).exec(function(err, searchContents){
                     if(err) throw err;
                     res.render('search', {title: "Searched", contents: searchContents});
                 });
             }
             //return res.status(404).json({error: 'wiki not found'});
              else{
-                wiki.count+=1;
+                wiki.viewCount+=1;
 
                 wiki.save(function(err){
                     if(err) throw err;
@@ -118,7 +143,7 @@ router.post('/random', wikicon.random);
 
 router.get('/trends', function(req, res){
     var limitSize = 10;
-    Wikis.find({deleted:false}).sort({count:-1}).limit(limitSize).exec(function(err, wiki) {
+    Wikis.find({deleted:false}).sort({editCount:-1}).limit(limitSize).exec(function(err, wiki) {
         if(err) throw err;
         res.render('trends', {title: "Trends", contents: wiki});
     });

@@ -9,6 +9,7 @@ exports.edit = function(req, res){
             var title = req.body.title;
             var newcon = req.body.contents;
             wiki.date = new Date();
+            wiki.editCount+=1;
             if(err){
                 console.log(err);
                 res.status(500).send('update error');

@@ -9,7 +9,16 @@
 <body>
     <% include ../partials/nav %>
     <div class="container">
+        <div>  
+            <%if(page){%>
+                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id=<%=page.title%>"><%= page.title %></a></h2> 
+            <%} else {%>
+                <h2>찾는 페이지가 없네요.. 만드시겠습니까?  <button id="create" class="btn btn-light" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
+            <%}%>
+        </div>
+
         <table class="table table-hover">
+            <h2>검색어를 포함한 페이지로는 이런게 있네요!</h2>
             <thead>
                 <tr>
                     <th>Number</th>
@@ -37,6 +46,15 @@
             </tbody>
         </table>
         <button id="create" class="btn btn-primary" onclick="tocreate()" type="button" style="display:inline">Create</button>
+        <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <%
+                    for(var i=1; i<=pagination; i++){
+                    %>
+                    <li class="page-item"><a class="page-link" href="/search?searchWord=<%=title%>&page=<%=i%>"><%=i%></a></li>
+                    <%}%>
+                </ul>
+            </nav>
     </div>
     </div>
     <script type="text/javascript">

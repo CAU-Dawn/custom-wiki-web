@@ -53,10 +53,12 @@
                };*/
        
     };
+    
+
     var submit = function(){
         var contents = CKEDITOR.instances.editor.getData();
         var editor = document.getElementById('editor');
-        title = title.replace( /(^\s*)|(\s*$)/g, "" );
+        title.toString().replace(/^\s*|\s*$/g, '');
         console.log(contents);
         console.log(title);
         if(title){
@@ -84,10 +86,12 @@
             alert('title cannot blank.');
             CKEDITOR.instances.editor.destroy();
             editor.contentEditable = false;
-
+            $("#edit").css("display","inline");
+            $("#submit").css("display","none");
         }
 
     };
+
     var password = function(){
        var checkBox = document.getElementById("checkBox")
        var password = document.getElementById("passwordBox")

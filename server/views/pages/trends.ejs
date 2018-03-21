@@ -11,7 +11,7 @@
     <div class="container">
         <div class="Trends">
             <div class="page-header">
-                <h3>최근 10개 트렌드</h3>
+                <h3>최근 10개 활동왕</h3>
             </div>
             <div class="row hidden-md-up">
                 <%var i=0;%>
@@ -30,7 +30,7 @@
                         <a href="/show?id=<%=item.title%>" class="btn btn-primary">Go</a>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Hot Point : <%=item.count%></small>
+                        <small class="text-muted">Hot Point : <%=item.editCount%></small>
                     </div>
                     </div>
                 </div>
