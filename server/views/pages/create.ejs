@@ -11,14 +11,14 @@
     <div class="container">
         <div class="page-header">
             <h1>Here to create.</h1>
-        </div>   
+        </div>
         <div class="input-group mb-3">
             <input type="text" id="title" class="form-control" placeholder="Title">
         </div>
         <div class="create-editor">
             <button id="edit" class="btn btn-primary" onclick="edit()" type="button" style="display:inline">Edit</button>
             <button id='submit' class='btn btn-primary' onclick='submit()' type='button' style="display:none">Submit</button>
-            <div id='editor' contenteditable='false'>        
+            <div id='editor' contenteditable='false'>
             </div>
         </div>
         <div>
@@ -29,7 +29,7 @@
        </div>
     </div>
     <script type="text/javascript">
-     
+
     var edit = function(){
         var submit_button = document.getElementById("submit");
         submit_button.style.display = "inline";
@@ -37,7 +37,7 @@
         edit_button.style.display = "none";
         CKEDITOR.disableAutoInline = true;
         CKEDITOR.replace('editor');
-        
+
         var editor = document.getElementById('editor');
         editor.contentEditable="true";
            /* BalloonEditor
@@ -51,14 +51,16 @@
                 function getDataFromTheEditor() {
                    return theEditor.getData();
                };*/
-       
+
     };
-    
+
+    title=""
 
     var submit = function(){
         var contents = CKEDITOR.instances.editor.getData();
         var editor = document.getElementById('editor');
-        title.toString().replace(/^\s*|\s*$/g, '');
+        title = title.replace(/^\s*|\s*$/g, '');
+        title = title.replace(/(<([^>]+)>)/gi, "");
         console.log(contents);
         console.log(title);
         if(title){

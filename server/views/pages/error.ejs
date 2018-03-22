@@ -11,12 +11,18 @@
     <div class="container">
         <h1>요청하신 페이지를 찾을 수 없습니다.</h1>
         <h2>페이지를 만드시겠습니까?
-        <button id="create" class="btn btn-primary" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
+        <button id="create" class="btn btn-light" onclick="toCreate()" type="button" style="display:inline">Create</button></h2>
+        <h2>장난치지 마세요. ㅡ3ㅡ
+        <button id="Door" class="btn btn-light" onclick="toDoor()" type="button" style="display:inline">대문으로 가기</button></h2>
     </div>
-    </div>
+    
+    
     <script type="text/javascript">
-        var tocreate = function(){
+        var toCreate = function(){
             location.replace("/create");
+        }
+        var toDoor = function(){
+            location.replace("/");
         }
     </script>
 

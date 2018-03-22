@@ -103,12 +103,13 @@ router.get('/show', function(req, res){
                 return res.status(500).json({error: err})
              }; //에러페이지로 전환.
             if(!wiki){
-                var search_word = paramtitle;
+               /* var search_word = paramtitle;
                 var searchCondition = {$regex:search_word};
                 Wikis.find({title:searchCondition}).sort({}).exec(function(err, searchContents){
                     if(err) throw err;
-                    res.render('search', {title: "Searched", contents: searchContents});
-                });
+                    res.render('search', {title: "Searched", page:"", contents: searchContents, pagination: 0});
+                });*/
+                res.render('error', {title: "Error"} )
             }
             //return res.status(404).json({error: 'wiki not found'});
              else{
@@ -165,6 +166,9 @@ router.get('/trends', function(req, res){
     });
 });
 
+router.get('/about',function(req, res){
+    res.render('about', {title: "About"});
+})
 
 
 
