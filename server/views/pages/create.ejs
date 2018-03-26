@@ -11,14 +11,14 @@
     <div class="container">
         <div class="page-header">
             <h1>Here to create.</h1>
-        </div>
+        </div>   
         <div class="input-group mb-3">
             <input type="text" id="title" class="form-control" placeholder="Title">
         </div>
         <div class="create-editor">
-            <button id="edit" class="btn btn-primary" onclick="edit()" type="button" style="display:inline">Edit</button>
+            <button id="edit" class="btn btn-primary" onclick="editModal()" type="button" style="display:inline">Edit</button>
             <button id='submit' class='btn btn-primary' onclick='submit()' type='button' style="display:none">Submit</button>
-            <div id='editor' contenteditable='false'>
+            <div id='editor' contenteditable='false'>        
             </div>
         </div>
         <div>
@@ -28,30 +28,66 @@
            </div>
        </div>
     </div>
+
+    <!-- edit 클릭 시 모달창-->
+    <div class="modal fade" id="modalForCreate" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" >Password Checking</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <label class="col-form-label">Password:</label>
+                  <input type="password" class="form-control" id="passwordForCreate">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onClick="edit()">Check</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
 
+    var editModal = function(){
+        $('#modalForCreate').modal();
+    }
+     
     var edit = function(){
-        var submit_button = document.getElementById("submit");
-        submit_button.style.display = "inline";
-        var edit_button = document.getElementById("edit");
-        edit_button.style.display = "none";
-        CKEDITOR.disableAutoInline = true;
-        CKEDITOR.replace('editor');
+        var password = $('#passwordForCreate').val();
 
-        var editor = document.getElementById('editor');
-        editor.contentEditable="true";
-           /* BalloonEditor
-               .create( document.querySelector( '#editor' ) )
-               .then( editor => {
-                    theEditor = editor;
-               })
-               .catch( error => {
-                    console.error( error );
-               });
-                function getDataFromTheEditor() {
-                   return theEditor.getData();
-               };*/
+        $.ajax({
+            url: '/createPw',
+            type: 'post',
+            data: {"password":password},
+            dataType: 'JSON',
+            async:false,
+            success: function(result) //result객체 반환 되는거 봐야함.
+            {
+                console.log(result);
+                if(result.status == 'success'){
+                    $('#modalForCreate').modal('hide');
+                    var submit_button = document.getElementById("submit");
+                    submit_button.style.display = "inline";
+                    var edit_button = document.getElementById("edit");
+                    edit_button.style.display = "none";
+                    CKEDITOR.disableAutoInline = true;
+                    CKEDITOR.replace('editor');
 
+                    var editor = document.getElementById('editor');
+                    editor.contentEditable="true";
+                } else {
+                    alert('password isn\'t right');
+                    $('#modalForCreate').modal('hide');                        
+                }
+                
+            }
+         })       
     };
 
     title=""

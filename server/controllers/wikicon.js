@@ -39,6 +39,7 @@ exports.create = function(req, res){
                 if(req.body.password){
                     wiki.password = req.body.password;
                 }
+                req.body.title = req.body.title.replace(/(<([^>]+)>)/gi, "");
                 wiki.title = req.body.title;
                 wiki.number = manage.number;
                 //wiki.author = req.body.author;
@@ -111,4 +112,11 @@ exports.random = function(req, res){
             
         })
     })
+}
+
+exports.createPw = function(req, res){
+    if(req.body.password == '0421'){
+        res.send({status:'success'});
+    } else 
+        res.send({status:'fail'});
 }

@@ -149,6 +149,8 @@ router.post('/existPw', wikicon.existPw);
 
 router.post('/checkPw', wikicon.checkPw);
 
+router.post('/createPw', wikicon.createPw);
+
 router.get('/error', function(req, res){
     console.log(req.param('id'))
     res.render('error',{
@@ -170,6 +172,11 @@ router.get('/about',function(req, res){
     res.render('about', {title: "About"});
 })
 
+
+// 백도어 페이지 
+router.get('/backdoor',function(req, res){
+    res.render('backdoor/main',{title:"Backdoor"});
+})
 
 
 module.exports = router;

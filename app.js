@@ -1,10 +1,11 @@
+
 var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var path = require('path');
 var index = require('./server/routes/index');
-
+var admin = require('./server/routes/admin'); // route 추가
 
 var app = express();
 
@@ -26,10 +27,10 @@ db.once('open', function(){
 mongoose.connect('mongodb://localhost:27017');
 
 app.use('/', index);
-app.use('/create', index);
-app.use('/search', index);
-app.use('/recentchange', index);
-app.use('/delete', index);
+
+app.use('/backdoor', admin); // backdoor로 들어온 라우팅 관리
+
+
 
 
 module.exports = app;

@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ckeditor/ckeditor5-build-balloon": "^1.0.0-alpha.2",
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
@@ -17,7 +16,9 @@
     "mongoose": "^5.0.8",
     "path": "^0.12.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "bower": "^1.8.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CauisMose/node-wiki.git"

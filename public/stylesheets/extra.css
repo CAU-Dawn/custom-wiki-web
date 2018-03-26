@@ -67,7 +67,7 @@ img {
   border-radius: 5px 5px 0 0;
 }
 .contents {
-  max-width: 200px;
+  max-width: 600px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

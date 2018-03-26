@@ -23,7 +23,7 @@
                 <h1><%- title %></h1>
             </div>
             <div id="editor">
-                <%- data %>
+                <%- data %> 
             </div>
         </div>
         <div class="recent-changes">
@@ -45,7 +45,7 @@
                     <%var i = 0;%>
                     <%contents.forEach(function(item){%>
                     <%i++;%>
-                    <%if(i>10) return %>
+                    <%if(i>5) return %>
                     <tr>
                         <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
@@ -73,7 +73,7 @@
         CKEDITOR.disableAutoInline = true;
         CKEDITOR.replace('editor'); // classic
         editor.contentEditable = true;
-
+        
     };
     var submit = function(){
         var edit_button = document.getElementById("edit");
@@ -83,9 +83,9 @@
 
         var contents = CKEDITOR.instances.editor.getData();
         var editor = document.getElementById('editor');
-
+        
         console.log(contents);
-
+        
         $.ajax({
             url: '/',
             type: 'post',
