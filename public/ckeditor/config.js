@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
@@ -33,6 +33,8 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	config.removeButtons = 'Source,Select,Button,ImageButton,HiddenField,Radio,Form,Image,Iframe,About,Language';
+	
+	config.format_tags = 'p;h2;h3;h4;h5;h6;pre;address;div'
 
 	config.extraPlugins = 'markdown,blockquote';
 	// Define changes to default configuration here. For example:

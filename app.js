@@ -6,10 +6,11 @@ var mongoose = require('mongoose');
 var path = require('path');
 var index = require('./server/routes/index');
 var admin = require('./server/routes/admin'); // route 추가
+var helmet = require('helmet');
 
 var app = express();
 
-
+app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
