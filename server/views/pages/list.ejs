@@ -3,8 +3,24 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 </head>
 <body>
     <% include ../partials/nav %>
@@ -26,10 +42,10 @@
                 </thead>
                 <tbody>
                 <%if(contents.length>0){%>
-                    
+
                     <%contents.forEach(function(item){%>
                     <%item.contents = item.contents.replace(/(<([^>]+)>)/gi, "");%>
-                    <%item.contents = item.contents.replace(/&nbsp;/ig, "");%> 
+                    <%item.contents = item.contents.replace(/&nbsp;/ig, "");%>
                     <tr>
                         <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
@@ -43,7 +59,7 @@
                 <%}%>
                 </tbody>
             </table>
-            
+
             </div>
             <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">

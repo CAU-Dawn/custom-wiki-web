@@ -3,8 +3,24 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 </head>
 <body>
     <% include ../partials/nav %>
@@ -51,10 +67,10 @@
                     <li><p>김하윤 - <a href = "show?id=김하윤">김하윤</a></p></li>
                 </ul>
             </div>
-        </div>   
-    
+        </div>
+
     </div>
-    
+
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>

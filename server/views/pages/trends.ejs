@@ -3,8 +3,24 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 </head>
 <body>
     <% include ../partials/nav %>
@@ -33,10 +49,10 @@
 
                     <!--<img class="card-img-top" src="/images/<%=i%>.jpg" alt="Card image cap">-->
                     <!--<div class="card-block">
-                        <div id="editor" class="contents">    
+                        <div id="editor" class="contents">
                             <%-item.contents%>
                         </div>
-                        
+
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Hot Point : <%=item.editCount%></small>
@@ -45,11 +61,11 @@
                     </div>
                 </div>
                 <%})%>
-            
+
             </div>
-        </div>            
+        </div>
     </div>
-    
+
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>

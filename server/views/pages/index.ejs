@@ -3,11 +3,39 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 66;
+          if ($(window).scrollTop() > navHeight) {
+            $('.navbar').addClass('fixed');
+          }
+          else {
+            $('.navbar').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        function setHeight() {
+          windowHeight = $(window).innerHeight()-66;
+          $('#blackpart, #whitepart').css('min-height', windowHeight);
+        };
+        setHeight();
+
+        $(window).resize(function() {
+          setHeight();
+        });
+      });
+    </script>
 </head>
 <body>
-    <% include ../partials/nav %>
+    <% include ../partials/indexnav %>
     <div class="container">
         <div class="page-header">
             <h1>ISWIKI</h1>
@@ -15,12 +43,12 @@
         <div class="notice">
             <%if(status == 0){%>
                 <a href="/create" class="btn btn-primary">Create</a>
-            <%}%> 
+            <%}%>
             <div>
                 <h1><%- title %></h1>
             </div>
             <div id="editor">
-                <%- data %> 
+                <%- data %>
             </div>
         </div>
         <div class="recent-changes">

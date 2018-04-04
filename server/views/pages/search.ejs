@@ -3,15 +3,31 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 </head>
 <body>
     <% include ../partials/nav %>
     <div class="container">
-        <div>  
+        <div>
             <%if(page){%>
-                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id=<%=page.title%>"><%= page.title %></a></h2> 
+                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id=<%=page.title%>"><%= page.title %></a></h2>
             <%} else {%>
                 <h2>찾는 페이지가 없네요.. 만드시겠습니까?  <button id="create" class="btn btn-light" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
             <%}%>

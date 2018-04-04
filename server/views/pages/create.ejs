@@ -3,22 +3,38 @@
 <html>
 <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <% include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 </head>
 <body>
     <% include ../partials/nav %>
     <div class="container">
         <div class="page-header">
             <h1>Here to create.</h1>
-        </div>   
+        </div>
         <div class="input-group mb-3">
             <input type="text" id="title" class="form-control" placeholder="Title">
         </div>
         <div class="create-editor">
             <button id="edit" class="btn btn-primary" onclick="editModal()" type="button" style="display:inline">Edit</button>
             <button id='submit' class='btn btn-primary' onclick='submit()' type='button' style="display:none">Submit</button>
-            <div id='editor' contenteditable='false'>        
+            <div id='editor' contenteditable='false'>
             </div>
         </div>
         <div>
@@ -57,7 +73,7 @@
     var editModal = function(){
         $('#modalForCreate').modal();
     }
-     
+
     var edit = function(){
         var password = $('#passwordForCreate').val();
 
@@ -82,11 +98,11 @@
                     editor.contentEditable="true";
                 } else {
                     alert('password isn\'t right');
-                    $('#modalForCreate').modal('hide');                        
+                    $('#modalForCreate').modal('hide');
                 }
-                
+
             }
-         })       
+         })
     };
 
     title=""
