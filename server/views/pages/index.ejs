@@ -7,32 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
     <% include ../partials/ck %>
-    <script>
-      $(document).ready(function(){
-        $(window).bind('scroll', function() {
-        var navHeight = $( window ).height() - 66;
-          if ($(window).scrollTop() > navHeight) {
-            $('.navbar').addClass('fixed');
-          }
-          else {
-            $('.navbar').removeClass('fixed');
-          }
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function() {
-        function setHeight() {
-          windowHeight = $(window).innerHeight()-66;
-          $('#blackpart, #whitepart').css('min-height', windowHeight);
-        };
-        setHeight();
 
-        $(window).resize(function() {
-          setHeight();
-        });
-      });
-    </script>
 </head>
 <body>
     <% include ../partials/indexnav %>
@@ -89,6 +64,32 @@
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 66;
+          if ($(window).scrollTop() > navHeight) {
+            $('.navbar').addClass('fixed');
+          }
+          else {
+            $('.navbar').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        function setHeight() {
+          windowHeight = $(window).innerHeight()-66;
+          $('#blackpart, #whitepart').css('min-height', windowHeight);
+        };
+        setHeight();
+
+        $(window).resize(function() {
+          setHeight();
+        });
+      });
+    </script>
 
 </body>
 </html>

@@ -8,19 +8,7 @@
     <%include ../partials/stylesheet %>
     <%include ../partials/outindexcss %>
     <% include ../partials/ck %>
-    <script>
-      $(document).ready(function(){
-        $(window).bind('scroll', function() {
-        var navHeight = $( window ).height() - 70;
-          if ($(window).scrollTop() > navHeight) {
-            $('nav').addClass('fixed');
-          }
-          else {
-            $('nav').removeClass('fixed');
-          }
-        });
-      });
-    </script>
+
 </head>
 <body>
     <% include ../partials/nav %>
@@ -75,6 +63,19 @@
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
 
 </body>
 </html>
