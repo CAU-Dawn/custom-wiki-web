@@ -3,15 +3,13 @@ var router = express.Router();
 var wikicon = require('../controllers/wikicon');
 var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
+var Trends = require('../models/trend');
 
 router.get('/', function(req, res, next){
     Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
         // db에서 날짜 순으로 데이터들을 가져옴
-
         Wikis.findOne({title: 'Door'}, function(err, wiki){
             if(err){
-                console.log('err');
-
                  return res.status(500).json({error: err})}; //에러페이지로 전환.
                  if(!wiki) return res.render('index',{
                     title:"Door",
@@ -19,8 +17,6 @@ router.get('/', function(req, res, next){
                     contents: wikis,
                     status:0
                  });
-
-
         res.render('index', {
             title: "Door",
             data : wiki.contents,
@@ -36,10 +32,8 @@ router.post('/', wikicon.edit );
 
 router.get('/create', function(req, res, next){
     res.render('create', {
-        title: 'Create',
-        data: 'Hello'
+        title: 'Create'
     });
-    // 현재 mongoose find query로 초기 render를 할 생각.
 });
 router.post('/create', wikicon.create);
 
@@ -52,23 +46,32 @@ router.get('/search', function(req, res){
     var skipSize = (page-1)*5;
     var limitSize = 5;
     var pageNum = 1;
-    
-    console.log('title:'+ search_word);
-     // 앞, 뒤 공백 제거
+
+    Trends.findOne({"title":search_word}, function(err, list){
+        if(!list){
+            var list = new Trends();
+            list.title = req.body.title;
+            list.edit = 0;
+        } else {
+            list.search += 1;
+        }
+        list.save();
+    })
+     
     if(!search_word){
         res.render('search', {title: "Searched", page: "", contents: "", pagination:0  })
     } else {
         Wikis.findOne({title:search_word}).exec(function(err, wiki){
             Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
-                .ne('title', search_word)
-                .exec(function(err, totalCount){
+                 .ne('title', search_word)
+                 .exec(function(err, totalCount){
                     pageNum = Math.ceil(totalCount/limitSize);
                 Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
-                    .ne('title', search_word)
-                    .sort({date:-1})
-                    .skip(skipSize)
-                    .limit(limitSize)
-                    .exec(function(err, searchContents){
+                     .ne('title', search_word)
+                     .sort({date:-1})
+                     .skip(skipSize)
+                     .limit(limitSize)
+                     .exec(function(err, searchContents){
                     if(err) throw err;
                     res.render('search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
                 });
@@ -103,12 +106,6 @@ router.get('/show', function(req, res){
                 return res.status(500).json({error: err})
              }; //에러페이지로 전환.
             if(!wiki){
-               /* var search_word = paramtitle;
-                var searchCondition = {$regex:search_word};
-                Wikis.find({title:searchCondition}).sort({}).exec(function(err, searchContents){
-                    if(err) throw err;
-                    res.render('search', {title: "Searched", page:"", contents: searchContents, pagination: 0});
-                });*/
                 res.render('error', {title: "Error"} )
             }
             //return res.status(404).json({error: 'wiki not found'});
@@ -162,9 +159,12 @@ router.post('/random', wikicon.random);
 
 router.get('/trends', function(req, res){
     var limitSize = 10;
-    Wikis.find({deleted:false}).sort({editCount:-1}).limit(limitSize).exec(function(err, wiki) {
+    Trends.find({edit:{ $ne: 0}})
+         .sort({edit:-1})
+         .limit(limitSize)
+         .exec(function(err, list){
         if(err) throw err;
-        res.render('trends', {title: "Trends", contents: wiki});
+        res.render('trends', {title: "Trends", contents: list});
     });
 });
 

@@ -3,12 +3,11 @@ var Schema = mongoose.Schema;
 
 var wikiSchema = new mongoose.Schema({
     title: String,
-    author: String,
+    status: {type: String, dafault: "Not Change"},
     password: {type:String, default:null},
     contents: Object,
     number: { type: Number, default: 0},
     viewCount: { type: Number, default: 0},
-    editCount: { type: Number, default: 0},
     date: { type: Date, default: Date.now },
     deleted : {type: Boolean, default:false}
 })

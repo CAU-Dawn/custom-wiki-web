@@ -15,10 +15,7 @@
         <div class="notice">
             <%if(status == 0){%>
                 <a href="/create" class="btn btn-primary">Create</a>
-            <%} else {%>
-            <button id="edit" class="btn btn-primary" onclick="edit()" type="button" style="display:inline">Edit</button>
-            <%}%>
-            <button id="submit" class="btn btn-primary" onclick="submit()" type="button" style="display:none">Submit</button>
+            <%}%> 
             <div>
                 <h1><%- title %></h1>
             </div>
@@ -61,52 +58,6 @@
             </table>
         </div>
     </div>
-    <script type="text/javascript">
-
-    var edit = function(){
-        var submit_button = document.getElementById("submit");
-        submit_button.style.display = "inline";
-        var edit_button = document.getElementById("edit");
-        edit_button.style.display = "none";
-
-        var editor = document.getElementById('editor');
-        CKEDITOR.disableAutoInline = true;
-        CKEDITOR.replace('editor'); // classic
-        editor.contentEditable = true;
-        
-    };
-    var submit = function(){
-        var edit_button = document.getElementById("edit");
-        edit_button.style.display = "inline";
-        var submit_button = document.getElementById("submit");
-        submit_button.style.display = "none";
-
-        var contents = CKEDITOR.instances.editor.getData();
-        var editor = document.getElementById('editor');
-        
-        console.log(contents);
-        
-        $.ajax({
-            url: '/',
-            type: 'post',
-            data: {"contents": contents, "title":"Door"},
-            dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
-            {
-                console.log(result);
-                if ( result.status == 1 ) {
-                    CKEDITOR.instances.editor.destroy();
-                    editor.contentEditable = false;
-                    //controller render로 처리.
-                } else {
-                    alert("Do not change Title")
-                    CKEDITOR.instances.editor.destroy();
-                    editor.contentEditable = false;
-                }
-            }
-        })
-    };
-    </script>
 
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
