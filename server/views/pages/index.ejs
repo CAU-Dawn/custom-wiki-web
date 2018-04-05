@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <%include ../partials/indexcss %>
+    <% include ../partials/ck %>
+
+</head>
+<body>
+    <% include ../partials/indexnav %>
+    <div class="container">
+        <div class="page-header">
+            <h1>ISSl</h1>
+        </div>
+        <div class="notice">
+            <%if(status == 0){%>
+                <a href="/create" class="btn btn-primary">Create</a>
+            <%}%>
+            <div>
+                <h1><a href="/show?id=Door"><%= title %></a></h1>
+            </div>
+            <div id="editor">
+                <%- data %>
+            </div>
+        </div>
+        <div class="recent-changes">
+            <div class="page-header">
+                <h3>Recent Changes</h3>
+            </div>
+            <!--동적으로 recent-changes control-->
+            <!--recent-changes라는 테이블 (즉 title에 관계없이 시간순으로 정렬된 모든 위키)이 필요할듯.-->
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%if(contents.length>0){%>
+                    <%var i = 0;%>
+                    <%contents.forEach(function(item){%>
+                    <%i++;%>
+                    <%if(i>5) return %>
+                    <tr>
+                        <td class="number"><%=item.number%></td>
+                        <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
+                        <td class="date"><%=item.date%></td>
+                    </tr>
+                    <%})%>
+                    <%} else {%>
+                    <tr>
+                        <td colspan="5">게시물이 없습니다.</td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 66;
+          if ($(window).scrollTop() > navHeight) {
+            $('.navbar').addClass('fixed');
+          }
+          else {
+            $('.navbar').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        function setHeight() {
+          windowHeight = $(window).innerHeight()-66;
+          $('#blackpart, #whitepart').css('min-height', windowHeight);
+        };
+        setHeight();
+
+        $(window).resize(function() {
+          setHeight();
+        });
+      });
+    </script>
+
+</body>
+</html>
