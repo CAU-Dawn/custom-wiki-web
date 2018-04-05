@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 var wikiSchema = new mongoose.Schema({
     title: String,
-    status: {type: String, dafault: "Not Change"},
     password: {type:String, default:null},
     contents: Object,
     number: { type: Number, default: 0},

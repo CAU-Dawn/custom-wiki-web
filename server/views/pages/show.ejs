@@ -99,6 +99,7 @@
 
     var edit = function(num){
         var path = getParameterByName('id')
+        pinNumber(num);
         var editorNum = 'editor'+num;
         var editor = document.getElementById(editorNum);
         $.ajax({
@@ -119,7 +120,6 @@
                 } // 누군가 변경 중
                  else { // 비번이 있다면
                     $('#passwordModal').modal();
-                    pinNumber(num);
                 }
             }
          })
@@ -140,10 +140,7 @@
                 if(result.status == 4){
                 alert('password isn\'t right.');
                 location.replace("/show?id="+path);
-                } else if(result.status == "change"){
-                    alert("누군가가 변경 중이에요!");
-                } // 누군가 변경 중
-                else {
+                } else {
                     $('#passwordModal').modal('hide');
                     CKEDITOR.disableAutoInline = true;
                     CKEDITOR.replace(editorNum);
@@ -221,7 +218,6 @@
 
     var checkPwDelete = function(){
         var password = $('#passwordForDelete').val();
-
         var path = getParameterByName('id')
         $.ajax({
             url: '/checkPw',
@@ -252,9 +248,6 @@
             }
         })
     }
-
-
-
     </script>
 
     <% include ../partials/footer %>
@@ -271,6 +264,18 @@
           }
         });
       });
+
+
+    $(function(){ // 모달창 enter 누를 시 check버튼 클릭
+        $('.modal').keypress(function(e){
+            if(e.which == 13) {
+                if(this.id == 'passwordModal')
+                   checkPwEdit();
+                else if(this.id == 'modalForDelete')
+                    checkPwDelete();
+            };
+        })
+    })
     </script>
 
 </body>

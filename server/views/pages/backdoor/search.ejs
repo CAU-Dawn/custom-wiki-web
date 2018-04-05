@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+
 <html>
 <head>
     <title><%= title %></title>
@@ -12,26 +13,32 @@
 <body>
     <% include ../../partials/nav_backdoor %>
     <div class="container">
-        <div class="page-header">
-            <h1><a class="text-dark" href="/backdoor/delete">Delete Page</a></h1>
+        <div>
+            <%if(page){%>
+                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id=<%=page.title%>"><%= page.title %></a></h2>
+            <%} else {%>
+                <h2>찾는 페이지가 없네요.. 만드시겠습니까?  <button id="create" class="btn btn-light" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
+            <%}%>
         </div>
-        <div >
-            <div >
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Number</th>
-                        <th>Title</th>
-                        <th>password</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <%if(contents.length>0){%>
-                <%contents.forEach(function(item){%>
+
+        <table class="table table-hover">
+            <h2>검색어를 포함한 페이지로는 이런게 있네요!</h2>
+            <thead>
                 <tr>
-                    <td class="number"><%=item.number%></td>
-                    <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
+                    <th>Number</th>
+                    <th>Title</th>
+                    <th>password</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            <%if(contents.length>0){%>
+                <%var i = 0;%>
+                <%contents.forEach(function(item){%>
+                <%i++;%>
+                <tr>
+                    <td class="number"><%= item.number %></td>
+                    <td class="title"><a href="/show?id=<%=item.title%>"><%= item.title %></a></td>
                     <td class="password"><%=item.password%></td>
                     <td class="delete"><button id="delete" class="btn btn-light" type="button" onclick="del('<%= item.title %>')">Delete</button></td>
                 </tr>
@@ -40,27 +47,32 @@
                 <tr>
                     <td colspan="5">게시물이 없습니다.</td>
                 </tr>
-                <%}%>
-                </tbody>
-            </table>
-            </div>
-            <nav aria-label="Page navigation example">
+            <%}%>
+            </tbody>
+        </table>
+        <button id="create" class="btn btn-primary" onclick="tocreate()" type="button" style="display:inline">Create</button>
+        <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <%
                     for(var i=1; i<=pagination; i++){
                     %>
-                    <li class="page-item"><a class="page-link" href="/backdoor/delete?page=<%=i%>"><%=i%></a></li>
-                     <%}%>
+                    <li class="page-item"><a class="page-link" href="/backdoor/search?searchWord=<%=title%>&page=<%=i%>"><%=i%></a></li>
+                    <%}%>
                 </ul>
             </nav>
-        </div>
     </div>
+    </div>
+    <script type="text/javascript">
+        var tocreate = function(){
+            location.replace("/create");
+        }
+    </script>
 
     <% include ../../partials/footer %>
     <% include ../../partials/javascript %>
 
     <script>
-        var del = function(path){
+      var del = function(path){
             if(confirm("Are u sure?") == true){
                 $.ajax({
                     url: '/delete',
@@ -78,9 +90,7 @@
                     }
                 })
             }
-        }
-    </script>
-    <script>
+        }   
       $(document).ready(function(){
         $(window).bind('scroll', function() {
         var navHeight = $( window ).height() - 70;
@@ -93,5 +103,6 @@
         });
       });
     </script>
+
 </body>
 </html>

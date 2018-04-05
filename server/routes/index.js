@@ -172,7 +172,6 @@ router.get('/about',function(req, res){
     res.render('about', {title: "About"});
 })
 
-
 // 백도어 페이지 
 router.get('/backdoor',function(req, res){
     res.render('backdoor/main',{title:"Backdoor"});

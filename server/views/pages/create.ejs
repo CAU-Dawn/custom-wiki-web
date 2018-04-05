@@ -98,7 +98,7 @@
     var submit = function(){
         var contents = CKEDITOR.instances.editor.getData();
         var editor = document.getElementById('editor');
-        title = title.replace(/^\s*|\s*$/g, '');
+        title = title.replace(/^\s*|\s*$/g, "");
         title = title.replace(/(<([^>]+)>)/gi, "");
         console.log(contents);
         console.log(title);

@@ -17,8 +17,6 @@ app.set('views', path.join(__dirname, 'server/views/pages'));
 app.set('view engine', 'ejs');
 
 
-
-
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
@@ -29,12 +27,6 @@ mongoose.connect('mongodb://localhost:27017');
 app.use('/', index);
 
 app.use('/backdoor', backdoor); // backdoor로 들어온 라우팅 관리
-
-var date = new Date();
-if(date.getDay() == 1){ // 오늘이 월요일이면
-
-}
-
 
 module.exports = app;
 

@@ -21,7 +21,7 @@ exports.edit = function(req, res){
                 res.status(500).send("update error");
                 return;
             };
-            wiki.status == "Not Change";
+            wiki.status = "Not Change";
             wiki.contents = newcon;
             wiki.save(function(err){
                 if(err) res.status(500).json({error: "failed to update"});
@@ -83,12 +83,8 @@ exports.delete = function(req, res){
 
 exports.existPw = function(req, res){
     Wikis.findOne({title:req.body.path}, function(err, wiki){
-        if(wiki.password == null && wiki.status != "change"){
-            wiki.status = "change";
-            wiki.save();
+        if(wiki.password == null){
             res.send({status:1});// password가 존재하지 않을 시 1을 반환
-        } else if (wiki.status == "change"){
-            res.send({status:"change"});
         } else
             res.send({status:3}); // password가 존재할 시 3을 반환
     })
@@ -96,13 +92,9 @@ exports.existPw = function(req, res){
 
 exports.checkPw = function(req, res){
     Wikis.findOne({title: req.body.path}, function(err, wiki){
-        if(wiki.password == req.body.password && wiki.status != "change"){
-            wiki.status = "change";
-            wiki.save();
+        if(wiki.password == req.body.password){
             res.send({status:1});
-         } else if (wiki.status == "change"){
-            res.send({status:"change"});
-        }// 패스워드 성공 
+         }// 패스워드 성공 
          else
             res.send({status:4}); // 패스워드 실패
     })
@@ -110,6 +102,9 @@ exports.checkPw = function(req, res){
 
 exports.random = function(req, res){
     Wikis.find({}, function(err, wikis){
+        if(wikis.length == 0){ // 글이 아무것도 없으면
+            res.send({status:2});
+        }
         var random = Math.floor(Math.random() * wikis.length);
         res.send({status:1, path: wikis[random].title})
     })
