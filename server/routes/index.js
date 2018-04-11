@@ -18,7 +18,7 @@ router.get('/', function(req, res, next){
                     status:0
                  });
         res.render('index', {
-            title: "Door",
+            title: "산보실록",
             data : wiki.contents,
             contents: wikis,
             status:1
