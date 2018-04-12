@@ -72,8 +72,10 @@ exports.create = function(req, res){
 
 exports.delete = function(req, res){
         Wikis.remove({title: req.body.title}, function(err, output){
+            Trends.remove({title:req.body.title}, function(err, output){
+            }); // 만약 trend에 있다면 해당 document 지우기
             if(err) return res.status(500).json({ error: "database failure" });
-            res.send({status:'success'});
+            res.send({status:'success'});    
         })
 };
 
