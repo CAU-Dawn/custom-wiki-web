@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <% include ../partials/stylesheet %>
-    <%include ../partials/outindexcss %>
+    <% include ../partials/outindexcss %>
     <% include ../partials/ck %>
     <% include ../partials/meta %>
+    
 
 </head>
 <body>
@@ -57,97 +58,97 @@
       </div>
     </div>
 
-    <script type="text/javascript">
-
-    var editModal = function(){
-        $('#modalForCreate').modal();
-    }
-
-    var edit = function(){
-        var password = $('#passwordForCreate').val();
-
-        $.ajax({
-            url: '/createPw',
-            type: 'post',
-            data: {"password":password},
-            dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
-            {
-                console.log(result);
-                if(result.status == 'success'){
-                    $('#modalForCreate').modal('hide');
-                    var submit_button = document.getElementById("submit");
-                    submit_button.style.display = "inline";
-                    var edit_button = document.getElementById("edit");
-                    edit_button.style.display = "none";
-                    CKEDITOR.disableAutoInline = true;
-                    CKEDITOR.replace('editor');
-
-                    var editor = document.getElementById('editor');
-                    editor.contentEditable="true";
-                } else {
-                    alert('password isn\'t right');
-                    $('#modalForCreate').modal('hide');
-                }
-
-            }
-         })
-    };
-
-    title=""
-
-    var submit = function(){
-        var contents = CKEDITOR.instances.editor.getData();
-        var editor = document.getElementById('editor');
-        title = title.replace(/^\s*|\s*$/g, "");
-        title = title.replace(/(<([^>]+)>)/gi, "");
-        console.log(contents);
-        console.log(title);
-        if(title){
-            $.ajax({
-                url: '/create',
-                type: 'post',
-                data: {"contents": contents, "title": title, "password": password},
-                dataType: 'JSON',
-                success: function(result)
-                {
-                    if ( result.status == 1 ) {
-                        console.log("succees");
-                        location.replace("/show?id="+result.newtitle);
-                    } else {
-                        alert('wiki title already exists.');
-                        CKEDITOR.instances.editor.destroy();
-                        editor.contentEditable = false;
-                        $("#edit").css("display","inline");
-                        $("#submit").css("display","none");
-                    }
-                }
-             })
-        } else {
-            alert('title cannot blank.');
-            CKEDITOR.instances.editor.destroy();
-            editor.contentEditable = false;
-            $("#edit").css("display","inline");
-            $("#submit").css("display","none");
-        }
-
-    };
-
-    var password = function(){
-       var checkBox = document.getElementById("checkBox")
-       var password = document.getElementById("passwordBox")
-
-       if(checkBox.checked == true){
-           password.style.display = "block"
-       } else {
-           password.style.display = "none"
-       }
-   }
-    </script>
-
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
     <% include ../partials/swal %>
+
+    <script type="text/javascript">
+
+        var editModal = function(){
+            $('#modalForCreate').modal();
+        }
+    
+        var edit = function(){
+            var password = $('#passwordForCreate').val();
+    
+            $.ajax({
+                url: '/createPw',
+                type: 'post',
+                data: {"password":password},
+                dataType: 'JSON',
+                success: function(result) //result객체 반환 되는거 봐야함.
+                {
+                    console.log(result);
+                    if(result.status == 'success'){
+                        $('#modalForCreate').modal('hide');
+                        var submit_button = document.getElementById("submit");
+                        submit_button.style.display = "inline";
+                        var edit_button = document.getElementById("edit");
+                        edit_button.style.display = "none";
+                        CKEDITOR.disableAutoInline = true;
+                        CKEDITOR.replace('editor');
+    
+                        var editor = document.getElementById('editor');
+                        editor.contentEditable="true";
+                    } else {
+                        alert('password isn\'t right');
+                        $('#modalForCreate').modal('hide');
+                    }
+    
+                }
+             })
+        };
+    
+        title=""
+    
+        var submit = function(){
+            var contents = CKEDITOR.instances.editor.getData();
+            var editor = document.getElementById('editor');
+            title = title.replace(/^\s*|\s*$/g, "");
+            title = title.replace(/(<([^>]+)>)/gi, "");
+            console.log(contents);
+            console.log(title);
+            if(title){
+                $.ajax({
+                    url: '/create',
+                    type: 'post',
+                    data: {"contents": contents, "title": title, "password": password},
+                    dataType: 'JSON',
+                    success: function(result)
+                    {
+                        if ( result.status == 1 ) {
+                            console.log("succees");
+                            location.replace("/show?id="+result.newtitle);
+                        } else {
+                            alert('wiki title already exists.');
+                            CKEDITOR.instances.editor.destroy();
+                            editor.contentEditable = false;
+                            $("#edit").css("display","inline");
+                            $("#submit").css("display","none");
+                        }
+                    }
+                 })
+            } else {
+                alert('title cannot blank.');
+                CKEDITOR.instances.editor.destroy();
+                editor.contentEditable = false;
+                $("#edit").css("display","inline");
+                $("#submit").css("display","none");
+            }
+    
+        };
+    
+        var password = function(){
+           var checkBox = document.getElementById("checkBox")
+           var password = document.getElementById("passwordBox")
+    
+           if(checkBox.checked == true){
+               password.style.display = "block"
+           } else {
+               password.style.display = "none"
+           }
+       }
+        </script>    
     
     <script>
        $('#password').on("input", function(){

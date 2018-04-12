@@ -32,128 +32,80 @@
         <%}%>
         <button id="delete" class="btn float-right btn-black" onclick="del()" type="button" >Delete</button>
 
-<!-- edit 눌렀을 시 모달창 -->
-<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" >Password Checking</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <label class="col-form-label">Password:</label>
-            <input type="password" class="form-control" id="password">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onClick="checkPwEdit()">Check</button>
-      </div>
     </div>
-  </div>
-</div>
 
-
-<!-- delete 눌렀을 시 모달창 -->
-<div class="modal fade" id="modalForDelete" tabindex="-1" role="dialog" aria-labelledby="modalForDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >Password Checking</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label class="col-form-label">Password:</label>
-                    <input type="password" class="form-control" id="passwordForDelete">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onClick="checkPwDelete()">Check</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
-
-
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>  
+    <% include ../partials/swal %>  
+    
     <script type="text/javascript">
 
     item = '<%-JSON.stringify(data)%>'
     item = item.replace(/<h2>/gi,'분할<h2>')
     itemArr = item.split('분할')
 
-
-    var pinNumber = function(number){ // checkPwEdit num에 editor id의 숫자를 넘겨줌
-        num = number;
-    }
-
-   function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     } // Parameter를 가져오는 함수
 
-    var edit = function(num){
-        var path = getParameterByName('id')
-        pinNumber(num);
-        var editorNum = 'editor'+num;
-        var editor = document.getElementById(editorNum);
-        $.ajax({
-            url: '/existPw',
-            type: 'post',
-            data: {"path":path},
-            dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
-            {
-                if(result.status == 1){ // 만약 비번이 없다면
-                    CKEDITOR.disableAutoInline = true;
-                    CKEDITOR.replace(editorNum);
-                    editor.contentEditable = true;
-                    $("#submit"+num).css("display","inline");
-                    $("#edit"+num).css("display","none");
-                } else if(result.status == "change"){
-                    alert("누군가가 변경 중이에요!");
-                } // 누군가 변경 중
-                 else { // 비번이 있다면
-                    $('#passwordModal').modal();
-                }
-            }
-         })
-    };
+    /*  edit 과정
+        {edit} -> {existPw}
+                if(!password) {editInit}
+                else {checkPw}
+                    if(password == right) {editInit}
+                    else Error
 
-    var checkPwEdit = function(){ // edit 클릭 시 비번 존재할 경우
-        var password = $('#password').val();
+    */
+
+    var edit = (num) => { 
         var path = getParameterByName('id')
-        var editorNum = 'editor'+num;
-        var editor = document.getElementById(editorNum);
-        $.ajax({
-            url: '/checkPw',
-            type: 'post',
-            data: {"path":path, "password":password},
-            dataType: 'JSON',
-            success: function(result)
-             {
-                if(result.status == 4){
-                    alert('password isn\'t right.');
-                    location.replace("/show?id="+path);
-                } else {
-                    $('#passwordModal').modal('hide');
-                    CKEDITOR.disableAutoInline = true;
-                    CKEDITOR.replace(editorNum);
-                    editor.contentEditable = true;
-                    $("#submit"+num).css("display","inline");
-                    $("#edit"+num).css("display","none");
-                }
+
+        existPw(path).then(function(response){
+            if(response.status == 'existent'){ // 비밀번호가 존재하면
+                swal({
+                    title:'Password',
+                    text: 'Enter your password!!',
+                    content: "input",
+                    button: {
+                        text: "Check!",
+                        closeModal: false,
+                    },
+                })
+                .then(password => {
+                    if(!password) throw Error;
+
+                    return checkPW(path, password);
+                })
+                .then(response => {
+                    if(response.status == 'success'){
+                        swal.close();
+                        return editInit(num);
+                    } else {
+                        swal("Error!", "Password doesn't match!", "error");
+                    }
+                })
+                .catch(err => {
+                    swal.close();
+                })
+            } else { // 비밀번호가 존재하지 않으면
+                return editInit(num);
             }
         })
+    };
+
+    var editInit = (num) => {
+        var editorNum = 'editor'+num;
+        var editor = document.getElementById(editorNum);
+        CKEDITOR.disableAutoInline = true;
+        CKEDITOR.replace(editorNum);
+        $("#submit"+num).css("display","inline");
+        $("#edit"+num).css("display","none");
     }
 
-    var submit = function(num){
+    var submit = (num) => {
         $("#edit"+num).css("display","inline");
         $("#submit"+num).css("display","none");
         var editorNum = 'editor'+num;
@@ -166,94 +118,110 @@
 
         var path = getParameterByName('id') // param의 id값 받기
 
-        $.ajax({
-            url: '/',
-            type: 'post',
-            data: {"contents": contents,"title":path, "path":path},
-            dataType: 'JSON',
-            success: function(result) //result객체 반환 되는거 봐야함.
-            {
-                console.log(result);
-                if ( result.status == 1 ) {
-                    CKEDITOR.instances[editorNum].destroy();
-                    editor.contentEditable = false;
-                }
+        $.post('/',{'contents':contents, 'title':path}).done(response => {
+            if(response.status === 1){
+                CKEDITOR.instances[editorNum].destroy();
+                editor.contentEditable = false;
             }
-         })
+        })
     };
 
-    var del = function(){
-        if(confirm("Are u sure?") == true){
-            var path = getParameterByName('id');
-            $.ajax({
-                url: '/existPw',
-                type: 'post',
-                data: {"path":path},
-                dataType: 'JSON',
-                success: function(result)
-                {
-                    console.log(result);
-                    if(result.status == 1){ // 만약 비번이 없다면
-                        $.ajax({
-                            url: '/delete',
-                            type: 'post',
-                            data: {"title": path, "path":path},
-                            dataType: 'JSON',
-                            success: function(result)
-                            {
-                                if ( result.status == 1 ) {
-                                    alert("Delete Complete.");
-                                    location.replace("/");
-                                }
-                            }
-                        })
-                    } else { // 만약 비번이 있다면
-                        $('#modalForDelete').modal();
-                    }
-                }
+    var existPw = (path) => {
+        return new Promise((resolve, reject) => {
+            $.post('/existPw',{"path":path}).done(function(response){
+              if(response){
+                resolve(response);
+              } else
+              reject(new Error('ExistPw Request is Failed.')); 
+            }); 
+        });
+    }
+
+    var checkPW = (path, password) => {
+        return new Promise((resolve, reject) => {
+            let path = getParameterByName('id');
+            $.post('/checkPw', {"path":path, "password":password}).done(response => {
+                if(response)
+                    resolve(response);
+                else    
+                    reject(new Error('CheckPw Request is Failed.'))
             })
-        } else {
-            alert("Good job. baby.");
-        }
-    };
+        })
+    }
 
-    var checkPwDelete = function(){
-        var password = $('#passwordForDelete').val();
-        var path = getParameterByName('id')
-        $.ajax({
-            url: '/checkPw',
-            type: 'post',
-            data: {"path":path, "password":password},
-            dataType: 'JSON',
-            success: function(result)
-             {
-                if(result.status == 4){
-                alert('password isn\'t right.');
-                location.replace("/show?id="+path);
-                } else {
-                    $.ajax({
-                        url: '/delete',
-                        type: 'post',
-                        data: {"title": path, "path":path},
-                        dataType: 'JSON',
-                        async:false,
-                        success: function(result)
-                        {
-                            if ( result.status == 1 ) {
-                                alert("Delete Complete.");
-                                location.replace("/");
-                            }
-                        }
-                    })
-                }
+    /*  del 과정
+        {del} -> {existPw}
+                if(!password) {deleted}
+                else {checkPw}
+                    if(password == right) {deleted}
+                    else Error
+
+    */
+
+    var deleted = (path) => {
+        $.post('/delete',{title:path}).done(response => {
+            if(response.status == 'success'){
+                swal({
+                    title: "Deleted!",
+                    text: "You deleted the document!",
+                    icon: "success",
+                    //timer: 700,
+                }).then(
+                    () => {location.replace('/');}  
+                )                
+            };
+        });
+    }
+
+    var del = () => {
+        var path = getParameterByName('id');
+        swal({ 
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this document data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+        .then((willDelete) => {
+            if (willDelete) {
+                return existPw(path);
+            } else {
+                swal("Your document data is safe!");
+            };
+        })
+        .then(response => {
+            if(response.status == 'existent'){
+                swal({
+                    title: 'Password',
+                    text: 'Enter your password!',
+                    content: "input",
+                    button: {
+                        text: "Check!",
+                        closeModal: false,
+                    },
+                })
+                .then(password => {
+                    if(!password) throw Error;
+
+                    return checkPW(path, password);
+                })
+                .then(response => {
+                    if(response.status == 'success'){
+                        return deleted(path);
+                    } else {
+                        swal("Error!", "Password doesn't match!", "error");
+                    }
+                })
+                .catch(err => {
+                    swal.close();
+                })
+            } else {
+                return deleted(path);
             }
         })
     }
-    </script>
 
-    <% include ../partials/footer %>
-    <% include ../partials/javascript %>
-    <% include ../partials/swal %>
+    </script>
     <script>
       $(document).ready(function(){
         $(window).bind('scroll', function() {
@@ -266,18 +234,6 @@
           }
         });
       });
-
-
-    $(function(){ // 모달창 enter 누를 시 check버튼 클릭
-        $('.modal').keypress(function(e){
-            if(e.which == 13) {
-                if(this.id == 'passwordModal')
-                   checkPwEdit();
-                else if(this.id == 'modalForDelete')
-                    checkPwDelete();
-            };
-        })
-    })
     </script>
 
 </body>

@@ -201,3 +201,6 @@ img {
 body {
   background-color: #212121;
 }
+.swal-button--confirm{
+  background-color: #212121
+}

@@ -1,11 +1,10 @@
 <!DOCTYPE HTML>
-
 <html>
 <head>
     <title><%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
-    <%include ../partials/indexcss %>
+    <% include ../partials/indexcss %>
     <% include ../partials/ck %>
     <% include ../partials/meta %>
 
@@ -21,7 +20,7 @@
                 <a href="/create" class="btn btn-primary">Create</a>
             <%}%>
             <div>
-                <h1><a href="/show?id=Door"><%= title %></a></h1>
+                <h1><a href="/show?id=Door">Door</a></h1>
             </div>
             <div id="editor">
                 <%- data %>

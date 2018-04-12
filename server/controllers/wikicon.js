@@ -2,7 +2,7 @@ var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 var Trends = require('../models/trend');
 
-exports.edit = function(req, res){
+exports.edit = function(req, res){ 
     Wikis.findOne({'title': req.body.title}, function(err,wiki){
         if(!wiki) return res.status(404).json({error: "wiki does not exist"});
             var newcon = req.body.contents;
@@ -71,32 +71,30 @@ exports.create = function(req, res){
 };
 
 exports.delete = function(req, res){
-    if(req.body.path == req.body.title){
         Wikis.remove({title: req.body.title}, function(err, output){
             if(err) return res.status(500).json({ error: "database failure" });
-            res.send({status:1});
+            res.send({status:'success'});
         })
-    } else {
-        res.send({status:404});
-    }
 };
 
 exports.existPw = function(req, res){
     Wikis.findOne({title:req.body.path}, function(err, wiki){
-        if(wiki.password == null){
-            res.send({status:1});// password가 존재하지 않을 시 1을 반환
-        } else
-            res.send({status:3}); // password가 존재할 시 3을 반환
+        if(wiki.password != null){
+            res.send({status:'existent'});// password가 존재
+        } else{
+            res.send({status:'nonexistent'}); // password가 존재X
+        }
+            
     })
 }
 
 exports.checkPw = function(req, res){
     Wikis.findOne({title: req.body.path}, function(err, wiki){
         if(wiki.password == req.body.password){
-            res.send({status:1});
+            res.send({status:'success'});
          }// 패스워드 성공 
          else
-            res.send({status:4}); // 패스워드 실패
+            res.send({status:'fail'}); // 패스워드 실패
     })
 }
 

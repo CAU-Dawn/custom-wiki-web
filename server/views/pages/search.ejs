@@ -16,7 +16,7 @@
     <div class="container">
         <div>
             <%if(page){%>
-                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id=<%=page.title%>"><%= page.title %></a></h2>
+                <h2>찾는 페이지가 이건가요? <a class="text-secondary" href="/show?id<%=page.title%>"><%= page.title %></a></h2>
             <%} else {%>
                 <h2>찾는 페이지가 없네요.. 만드시겠습니까?  <button id="create" class="btn btn-light" onclick="tocreate()" type="button" style="display:inline">Create</button></h2>
             <%}%>

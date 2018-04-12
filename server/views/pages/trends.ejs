@@ -23,31 +23,14 @@
                 <%contents.forEach(function(item){%>
                 <%i++;%>
                 <div class="col-md-4" style="margin-bottom: 30px">
-                    <div class="card" style="background: #000000">
-                        <!--<div class="page-header border-bottom title">
-                            <h1>Rank.<%=i%> <%-item.title%></h1>
-                        </div> -->
-                        <figure class="snip1273">
-                            <img class="" src="images/<%=i%>.png" alt="sample72"/>
+                    <figure class="snip1273">
+                        <img class="" src="images/<%=i%>.png" alt="sample72"/>
                             <figcaption>
                               <h3 class="contents"><%-item.title%></h3>
                               <p class="float-right">activity index : <%=item.edit%></p>
                             </figcaption>
-                            <a href="show?id=<%=item.title%>"></a>
-                          </figure>
-
-                    <!--<img class="card-img-top" src="/images/<%=i%>.jpg" alt="Card image cap">-->
-                    <!--<div class="card-block">
-                        <div id="editor" class="contents">
-                            <%-item.contents%>
-                        </div>
-
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Hot Point : <%=item.editCount%></small>
-                        <a href="/show?id=<%=item.title%>" class="btn btn-primary float-right">Go</a>
-                    </div> -->
-                    </div>
+                        <a href="show?id=<%=item.title%>"></a>
+                    </figure>
                 </div>
                 <%})%>
 

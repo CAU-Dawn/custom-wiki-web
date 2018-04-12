@@ -1,0 +1,171 @@
+
+    <script type="text/javascript">
+
+        item = '<%-JSON.stringify(data)%>'
+        item = item.replace(/<h2>/gi,'분할<h2>')
+        itemArr = item.split('분할')
+    
+    
+        var pinNumber = function(number){ // checkPwEdit num에 editor id의 숫자를 넘겨줌
+            num = number;
+        }
+    
+       function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        } // Parameter를 가져오는 함수
+    
+        var edit = function(num){
+            var path = getParameterByName('id')
+            pinNumber(num);
+            var editorNum = 'editor'+num;
+            var editor = document.getElementById(editorNum);
+            $.ajax({
+                url: '/existPw',
+                type: 'post',
+                data: {"path":path},
+                dataType: 'JSON',
+                success: function(result) //result객체 반환 되는거 봐야함.
+                {
+                    if(result.status == 1){ // 만약 비번이 없다면
+                        CKEDITOR.disableAutoInline = true;
+                        CKEDITOR.replace(editorNum);
+                        editor.contentEditable = true;
+                        $("#submit"+num).css("display","inline");
+                        $("#edit"+num).css("display","none");
+                    } else if(result.status == "change"){
+                        alert("누군가가 변경 중이에요!");
+                    } // 누군가 변경 중
+                     else { // 비번이 있다면
+                        $('#passwordModal').modal();
+                    }
+                }
+             })
+        };
+    
+        var checkPwEdit = function(){ // edit 클릭 시 비번 존재할 경우
+            var password = $('#password').val();
+            var path = getParameterByName('id')
+            var editorNum = 'editor'+num;
+            var editor = document.getElementById(editorNum);
+            $.ajax({
+                url: '/checkPw',
+                type: 'post',
+                data: {"path":path, "password":password},
+                dataType: 'JSON',
+                success: function(result)
+                 {
+                    if(result.status == 4){
+                        alert('password isn\'t right.');
+                        location.replace("/show?id="+path);
+                    } else {
+                        $('#passwordModal').modal('hide');
+                        CKEDITOR.disableAutoInline = true;
+                        CKEDITOR.replace(editorNum);
+                        editor.contentEditable = true;
+                        $("#submit"+num).css("display","inline");
+                        $("#edit"+num).css("display","none");
+                    }
+                }
+            })
+        }
+    
+        var submit = function(num){
+            $("#edit"+num).css("display","inline");
+            $("#submit"+num).css("display","none");
+            var editorNum = 'editor'+num;
+            var editor = document.getElementById(editorNum);
+    
+            itemArr[num] = CKEDITOR.instances[editorNum].getData();
+            var contents = itemArr.join('');
+            if(contents[0]=='\"') // join을 안하는 경우 맨 앞이 "
+                contents = contents.slice(1,-1); // join할 시 맨 앞,뒤에 ""제거
+    
+            var path = getParameterByName('id') // param의 id값 받기
+    
+            $.ajax({
+                url: '/',
+                type: 'post',
+                data: {"contents": contents,"title":path, "path":path},
+                dataType: 'JSON',
+                success: function(result) //result객체 반환 되는거 봐야함.
+                {
+                    console.log(result);
+                    if ( result.status == 1 ) {
+                        CKEDITOR.instances[editorNum].destroy();
+                        editor.contentEditable = false;
+                    }
+                }
+             })
+        };
+    
+        var del = function(){
+            if(confirm("Are u sure?") == true){
+                var path = getParameterByName('id');
+                $.ajax({
+                    url: '/existPw',
+                    type: 'post',
+                    data: {"path":path},
+                    dataType: 'JSON',
+                    success: function(result)
+                    {
+                        console.log(result);
+                        if(result.status == 1){ // 만약 비번이 없다면
+                            $.ajax({
+                                url: '/delete',
+                                type: 'post',
+                                data: {"title": path, "path":path},
+                                dataType: 'JSON',
+                                success: function(result)
+                                {
+                                    if ( result.status == 1 ) {
+                                        alert("Delete Complete.");
+                                        location.replace("/");
+                                    }
+                                }
+                            })
+                        } else { // 만약 비번이 있다면
+                            $('#modalForDelete').modal();
+                        }
+                    }
+                })
+            } else {
+                alert("Good job. baby.");
+            }
+        };
+    
+        var checkPwDelete = function(){
+            var password = $('#passwordForDelete').val();
+            var path = getParameterByName('id')
+            $.ajax({
+                url: '/checkPw',
+                type: 'post',
+                data: {"path":path, "password":password},
+                dataType: 'JSON',
+                success: function(result)
+                 {
+                    if(result.status == 4){
+                    alert('password isn\'t right.');
+                    location.replace("/show?id="+path);
+                    } else {
+                        $.ajax({
+                            url: '/delete',
+                            type: 'post',
+                            data: {"title": path, "path":path},
+                            dataType: 'JSON',
+                            async:false,
+                            success: function(result)
+                            {
+                                if ( result.status == 1 ) {
+                                    alert("Delete Complete.");
+                                    location.replace("/");
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        }
+        </script>
