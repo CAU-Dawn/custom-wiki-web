@@ -28,6 +28,11 @@ app.use('/', index);
 
 app.use('/backdoor', backdoor); // backdoor로 들어온 라우팅 관리
 
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+}); // 에러 미들웨어 
+
 module.exports = app;
 
 http.createServer(app).listen(80, function(){

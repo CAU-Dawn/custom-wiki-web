@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title><%= title %></title>
+    <title>산보실록 - <%- title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
@@ -121,7 +121,6 @@
     var editInit = (num) => {
         var editorNum = 'editor'+num;
         var editor = document.getElementById(editorNum);
-        CKEDITOR.disableAutoInline = true;
         CKEDITOR.replace(editorNum);
         $("#submit"+num).css("display","inline");
         $("#edit"+num).css("display","none");

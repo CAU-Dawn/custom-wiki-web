@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title><%= title %></title>
+    <title>산보실록 - <%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <% include ../partials/stylesheet %>
@@ -19,20 +19,22 @@
             <h1>Here to create.</h1>
         </div>
         <div class="input-group mb-3">
-            <input type="text" id="title" class="form-control" placeholder="Title">
+            <input type="text" id="title" class="form-control" placeholder="Title" value='<%=title%>'>
         </div>
         <div class="create-editor">
-            <button id="edit" class="btn btn-primary" onclick="editModal()" type="button" style="display:inline">Edit</button>
-            <button id='submit' class='btn btn-primary' onclick='submit()' type='button' style="display:none">Submit</button>
-            <div id='editor' contenteditable='false'>
+            <button id='submit' class='btn btn-primary' onclick='submit()' type='button'>Submit</button>
+            <div id='editor'>
             </div>
         </div>
-        <div>
-           <input type = "checkbox" id="checkBox" onClick="password()">비밀번호
-           <div id="passwordBox" style="display:none">
-               <h4>Password:<input type ="password" id="password"></h4>
-           </div>
-       </div>
+
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="checkBox" onClick="password()">
+            <label class="custom-control-label" for="checkBox">Password Setting</label>
+        </div>
+
+        <div id="passwordBox" class="form-group" style="display:none">
+            <input type="password" id="password" placeholder="Password..." class="form-control mx-sm-3" aria-describedby="passwordHelpInline" style="width:250px">
+        </div>
     </div>
 
     <!-- edit 클릭 시 모달창-->
@@ -64,6 +66,11 @@
 
     <script type="text/javascript">
 
+        CKEDITOR.replace('editor');
+    
+    var editor = document.getElementById('editor');
+    editor.contentEditable="true";
+
         var editModal = function(){
             $('#modalForCreate').modal();
         }
@@ -85,7 +92,6 @@
                         submit_button.style.display = "inline";
                         var edit_button = document.getElementById("edit");
                         edit_button.style.display = "none";
-                        CKEDITOR.disableAutoInline = true;
                         CKEDITOR.replace('editor');
     
                         var editor = document.getElementById('editor');

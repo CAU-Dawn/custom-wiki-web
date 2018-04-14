@@ -31,17 +31,18 @@ router.get('/', function(req, res, next){
 router.post('/', wikicon.edit );
 
 router.get('/create', function(req, res, next){
+    let title = req.query.title;
     res.render('create', {
-        title: 'Create'
+        title: title
     });
 });
 router.post('/create', wikicon.create);
 
 router.get('/search', function(req, res){
-    var search_word = req.param('searchWord');
+    var search_word = req.query.searchWord;
     var searchCondition = {$regex:search_word}; // regex의 쓰임새가 무엇?
 
-    var page = req.param('page');
+    var page = req.query.page;
     if(page == null) {page = 1;}
     var skipSize = (page-1)*5;
     var limitSize = 5;
@@ -56,10 +57,10 @@ router.get('/search', function(req, res){
             list.search += 1;
         }
         list.save();
-    })
+    }) // trend 기능
      
-    if(!search_word){
-        res.render('search', {title: "Searched", page: "", contents: "", pagination:0  })
+    if(!search_word){ // 만약 검색어가 없을 시
+        res.render('search', {title: "", page: "", contents: "", pagination:0  })
     } else {
         Wikis.findOne({title:search_word}).exec(function(err, wiki){
             Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
@@ -81,7 +82,7 @@ router.get('/search', function(req, res){
 });
 
 router.get('/recentchange', function(req, res){
-    var page = req.param('page');
+    var page = req.query.page;
     if(page == null) {page = 1;}
     var skipSize = (page-1)*10;
     var limitSize = 10;
@@ -97,15 +98,13 @@ router.get('/recentchange', function(req, res){
 })
 
 router.get('/show', function(req, res){
-    console.log(req.param('id'));
-    let paramtitle = req.param('id');
+    let paramtitle = req.query.id;
 
-    if(req.param('type') == null) 
+    if(req.query.type == null) 
         var type = 'partial';
     else{
-        var type = req.param('type');
+        var type = req.query.type;
     }
-      // 
 
         Wikis.findOne({title: paramtitle}, function(err, wiki){
             if(err){
@@ -132,7 +131,7 @@ router.get('/show', function(req, res){
 })
 
 router.get('/list', function(req, res){
-    var page = req.param('page');
+    var page = req.query.page;
     if(page == null) {page = 1;}
     var skipSize = (page-1)*10;
     var limitSize = 10;
@@ -156,7 +155,7 @@ router.post('/checkPw', wikicon.checkPw);
 router.post('/createPw', wikicon.createPw);
 
 router.get('/error', function(req, res){
-    console.log(req.param('id'))
+    console.log(req.query.id+' 페이지 로딩 실패')
     res.render('error',{
         title: 'Error'
     })

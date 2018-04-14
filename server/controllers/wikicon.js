@@ -21,7 +21,6 @@ exports.edit = function(req, res){
                 res.status(500).send("update error");
                 return;
             };
-            wiki.status = "Not Change";
             wiki.contents = newcon;
             wiki.save(function(err){
                 if(err) res.status(500).json({error: "failed to update"});
