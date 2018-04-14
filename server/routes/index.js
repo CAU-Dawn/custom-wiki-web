@@ -152,8 +152,6 @@ router.post('/existPw', wikicon.existPw);
 
 router.post('/checkPw', wikicon.checkPw);
 
-router.post('/createPw', wikicon.createPw);
-
 router.get('/error', function(req, res){
     console.log(req.query.id+' 페이지 로딩 실패')
     res.render('error',{

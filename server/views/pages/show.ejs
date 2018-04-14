@@ -167,7 +167,7 @@
 
     var existPw = (path) => {
         return new Promise((resolve, reject) => {
-            $.post('/existPw',{"path":path}).done(function(response){
+            $.post('/existPw',{"path":path}).done(response => {
               if(response){
                 resolve(response);
               } else

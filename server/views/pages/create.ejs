@@ -22,7 +22,7 @@
             <input type="text" id="title" class="form-control" placeholder="Title" value='<%=title%>'>
         </div>
         <div class="create-editor">
-            <button id='submit' class='btn btn-primary' onclick='submit()' type='button'>Submit</button>
+            <button id='submit' class='btn btn-primary' onclick='checkPw()' type='button'>Create</button>
             <div id='editor'>
             </div>
         </div>
@@ -37,133 +37,79 @@
         </div>
     </div>
 
-    <!-- edit 클릭 시 모달창-->
-    <div class="modal fade" id="modalForCreate" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" >Password Checking</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <label class="col-form-label">Password:</label>
-                  <input type="password" class="form-control" id="passwordForCreate">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onClick="edit()">Check</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <% include ../partials/footer %>
     <% include ../partials/javascript %>
     <% include ../partials/swal %>
 
     <script type="text/javascript">
 
-        CKEDITOR.replace('editor');
+    CKEDITOR.replace('editor');
     
     var editor = document.getElementById('editor');
     editor.contentEditable="true";
 
-        var editModal = function(){
-            $('#modalForCreate').modal();
+        var checkPw = () => {
+            swal({
+                title: 'Public Password',
+                text: 'Enter public password! (Hint : 산업보안학과 과방)',
+                content: "input",
+                button: {
+                    text: "Check!",
+                    closeModal: false,
+                }
+            })
+            .then(password => {
+                if(!password) throw Error;
+
+                $.post('/checkPw',{password:password}).done(response =>{
+                    if(response.status != 'success'){ // 만약 비밀번호를 틀리면
+                        swal("Error!", "Password doesn't match!", "error");
+                    } else {
+                        swal.close();
+                        submit();
+                    }
+                })
+            })
+            .catch(() => {
+                swal.close();
+            })
         }
     
-        var edit = function(){
-            var password = $('#passwordForCreate').val();
-    
-            $.ajax({
-                url: '/createPw',
-                type: 'post',
-                data: {"password":password},
-                dataType: 'JSON',
-                success: function(result) //result객체 반환 되는거 봐야함.
-                {
-                    console.log(result);
-                    if(result.status == 'success'){
-                        $('#modalForCreate').modal('hide');
-                        var submit_button = document.getElementById("submit");
-                        submit_button.style.display = "inline";
-                        var edit_button = document.getElementById("edit");
-                        edit_button.style.display = "none";
-                        CKEDITOR.replace('editor');
-    
-                        var editor = document.getElementById('editor');
-                        editor.contentEditable="true";
-                    } else {
-                        alert('password isn\'t right');
-                        $('#modalForCreate').modal('hide');
-                    }
-    
-                }
-             })
-        };
-    
-        title=""
-    
-        var submit = function(){
+        var submit = () => {
             var contents = CKEDITOR.instances.editor.getData();
-            var editor = document.getElementById('editor');
+            var title = $('#title').val();
+            var password = $('#password').val();
+
             title = title.replace(/^\s*|\s*$/g, "");
-            title = title.replace(/(<([^>]+)>)/gi, "");
+            title = title.replace(/(<([^>]+)>)/gi, ""); // title 스크립트 어떻게 방지?
+
             console.log(contents);
             console.log(title);
             if(title){
-                $.ajax({
-                    url: '/create',
-                    type: 'post',
-                    data: {"contents": contents, "title": title, "password": password},
-                    dataType: 'JSON',
-                    success: function(result)
-                    {
-                        if ( result.status == 1 ) {
-                            console.log("succees");
-                            location.replace("/show?id="+result.newtitle);
-                        } else {
-                            alert('wiki title already exists.');
-                            CKEDITOR.instances.editor.destroy();
-                            editor.contentEditable = false;
-                            $("#edit").css("display","inline");
-                            $("#submit").css("display","none");
-                        }
+                $.post('/create',{contents:contents, title:title, password:password}).done(response => {
+                    if ( response.status == 'success' ) {
+                        location.replace("/show?id="+response.newtitle);
+                    } else {
+                        swal("Error!", "Wiki title already exists.", "error");
                     }
-                 })
+                })
             } else {
-                alert('title cannot blank.');
-                CKEDITOR.instances.editor.destroy();
-                editor.contentEditable = false;
-                $("#edit").css("display","inline");
-                $("#submit").css("display","none");
+                swal("Error!", "Title can't blank.", "error");
             }
+        }; 
     
-        };
+    var password = function(){
+        var checkBox = document.getElementById("checkBox")
+        var password = document.getElementById("passwordBox")
     
-        var password = function(){
-           var checkBox = document.getElementById("checkBox")
-           var password = document.getElementById("passwordBox")
+        if(checkBox.checked == true){
+            password.style.display = "block"
+        } else {
+            password.style.display = "none"
+        }
+    }
+    </script>    
     
-           if(checkBox.checked == true){
-               password.style.display = "block"
-           } else {
-               password.style.display = "none"
-           }
-       }
-        </script>    
-    
-    <script>
-       $('#password').on("input", function(){
-               password = $(this).val();
-           });
-        $('#title').on("input", function(){
-               title = $(this).val();
-           });
-   </script>
    <script>
      $(document).ready(function(){
        $(window).bind('scroll', function() {

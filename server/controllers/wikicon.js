@@ -52,7 +52,7 @@ exports.create = function(req, res){
                         console.log({status: 0});
                         return;
                     }
-                    res.send({status:1, newtitle: req.body.title});
+                    res.send({status:'success', newtitle: req.body.title});
                 });
                 manage.number = manage.number+1;
                 manage.save(function(err){
@@ -90,13 +90,22 @@ exports.existPw = function(req, res){
 }
 
 exports.checkPw = function(req, res){
-    Wikis.findOne({title: req.body.path}, function(err, wiki){
-        if(wiki.password == req.body.password){
-            res.send({status:'success'});
-         }// 패스워드 성공 
-         else
-            res.send({status:'fail'}); // 패스워드 실패
-    })
+    if(req.body.path){ // path가 존재한다는 건 show page에서 보낸 요청
+        Wikis.findOne({title: req.body.path}, function(err, wiki){
+            if(wiki.password == req.body.password){
+                res.send({status:'success'});
+            }// 패스워드 성공 
+            else
+                res.send({status:'fail'}); // 패스워드 실패
+        })
+    } else { // path가 없는 것은 create page에서 보낸 요청 
+        Manages.findOne({title:'manager1'}, function(err, manage){
+            if(req.body.password == manage.password){
+                res.send({status:'success'});
+            } else 
+                res.send({status:'fail'});
+        })
+    }
 }
 
 exports.random = function(req, res){
@@ -106,14 +115,5 @@ exports.random = function(req, res){
         }
         var random = Math.floor(Math.random() * wikis.length);
         res.send({status:1, path: wikis[random].title})
-    })
-}
-
-exports.createPw = function(req, res){
-    Manages.findOne({title:'manager1'}, function(err, manage){
-        if(req.body.password == manage.password){
-            res.send({status:'success'});
-        } else 
-            res.send({status:'fail'});
     })
 }
