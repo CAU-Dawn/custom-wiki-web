@@ -98,7 +98,14 @@ router.get('/recentchange', function(req, res){
 
 router.get('/show', function(req, res){
     console.log(req.param('id'));
-    var paramtitle = req.param('id');
+    let paramtitle = req.param('id');
+
+    if(req.param('type') == null) 
+        var type = 'partial';
+    else{
+        var type = req.param('type');
+    }
+      // 
 
         Wikis.findOne({title: paramtitle}, function(err, wiki){
             if(err){
@@ -117,8 +124,8 @@ router.get('/show', function(req, res){
                 })
                 res.render('show', {
                     title: wiki.title,
-                    data : wiki.contents
-                
+                    data : wiki.contents,
+                    type : type
                 });
             }
         });

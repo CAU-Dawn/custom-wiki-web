@@ -67,11 +67,13 @@ img {
   border-radius: 5px 5px 0 0;
 }
 .contents {
-  max-width: 600px;
+  max-width: 600px; /* 하윤이가 고쳐줘야할 부분 */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,500,700);
 .snip1273 {
   font-family: 'Raleway', Arial, sans-serif;

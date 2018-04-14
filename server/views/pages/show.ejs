@@ -15,9 +15,19 @@
     <% include ../partials/nav %>
     <div class="container">
         <div class="page-header border-bottom" style="margin-bottom: 30px">
-            <h1><%- title %></h1>
+            <h1><%- title %> <button id="typeChange" class="btn float-right btn-light" onclick="typeChange()" type="button">View all - Partial View</button></h1>
         </div>
-        <% var item= data%>
+        <% if(type == 'all'){ %>
+            <% var i = 0; %>
+        <button id="edit<%=i%>" class="btn float-right btn-light" onclick="edit('<%= i %>')" type="button" style="display:inline" >Edit</button>
+        <button id="submit<%=i%>" class="btn float-right btn-light" onclick="submitAll('<%= i %>')" type="button" style="display:none">Submit</button>
+
+        <div class="border border-white" style="margin-bottom: 30px" id="editor<%=i%>">
+                <%-data%>
+        </div>
+
+            <% } else { %>
+        <% var item = data%>
         <% item = item.replace(/<h2>/gi,'분할<h2>') %>
         <% var itemArr = item.split('분할')%>
         <% for(var i=0; i<itemArr.length; i++){%>
@@ -25,10 +35,11 @@
         <button id="edit<%=i%>" class="btn float-right btn-light" onclick="edit('<%= i %>')" type="button" style="display:inline" >Edit</button>
         <button id="submit<%=i%>" class="btn float-right btn-light" onclick="submit('<%= i %>')" type="button" style="display:none">Submit</button>
 
-        <div class="border border-white" style="margin-bottom: 30px" id="editor<%=i%>">
+        <div class="border border-white" style="margin-bottom: 15px" id="editor<%=i%>">
                 <%-itemArr[i]%>
         </div>
 
+        <%}%>
         <%}%>
         <button id="delete" class="btn float-right btn-black" onclick="del()" type="button" >Delete</button>
 
@@ -40,9 +51,20 @@
     
     <script type="text/javascript">
 
-    item = '<%-JSON.stringify(data)%>'
-    item = item.replace(/<h2>/gi,'분할<h2>')
-    itemArr = item.split('분할')
+    var typeChange = () => {
+        var path = getParameterByName('id');
+        var type = getParameterByName('type');
+        if(type == 'all') type = 'partial';
+        else type = 'all';
+       location.href ='show?id='+path+'&type='+type;
+    }
+
+    if(getParameterByName('type') == 'partial'){
+        var item = '<%-JSON.stringify(data)%>'
+        var item = item.replace(/<h2>/gi,'분할<h2>')
+        var itemArr = item.split('분할')
+    } else
+        var itemArr = [];
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -103,6 +125,24 @@
         CKEDITOR.replace(editorNum);
         $("#submit"+num).css("display","inline");
         $("#edit"+num).css("display","none");
+    }
+
+    var submitAll = (num) => {
+        $("#edit"+num).css("display","inline");
+        $("#submit"+num).css("display","none");
+        var editorNum = 'editor'+num;
+        var editor = document.getElementById(editorNum);
+
+        var contents = CKEDITOR.instances[editorNum].getData();
+
+        var path = getParameterByName('id') // param의 id값 받기
+
+        $.post('/',{'contents':contents, 'title':path}).done(response => {
+            if(response.status === 1){
+                CKEDITOR.instances[editorNum].destroy();
+                editor.contentEditable = false;
+            }
+        })
     }
 
     var submit = (num) => {

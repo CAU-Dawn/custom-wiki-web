@@ -1,5 +1,5 @@
-/**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+﻿
+ /* @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -12,6 +12,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// %REMOVE_END%
 	config.keystrokes = [
     [ CKEDITOR.ALT + 65, 'anchor' ],
+    [ CKEDITOR.CTRL + 72, 'horizontalrule']
     ];   
 
     config.toolbarGroups = [
@@ -19,11 +20,11 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
 		{ name: 'forms', groups: [ 'forms' ] },
+		{ name: 'insert', groups: [ 'insert' ] },
 		'/',
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
 		{ name: 'links', groups: [ 'links' ] },
-		{ name: 'insert', groups: [ 'insert' ] },
 		'/',
 		{ name: 'styles', groups: [ 'styles' ] },
 		{ name: 'colors', groups: [ 'colors' ] },
@@ -32,11 +33,15 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about', groups: [ 'about' ] }
 	];
 
+	config.autoGrow_onStartup = true;
+	config.autoGrow_minHeight = 200;
+	config.autoGrow_maxHeight = 600;
+
 	config.removeButtons = 'Source,Select,Button,ImageButton,HiddenField,Radio,Form,Image,Iframe,About,Language';
 	
 	config.format_tags = 'p;h2;h3;h4;h5;h6;pre;address;div'
 
-	config.extraPlugins = 'markdown,blockquote';
+	config.extraPlugins = 'markdown,blockquote,autogrow';
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	//config.uiColor = '#AADC6E';
