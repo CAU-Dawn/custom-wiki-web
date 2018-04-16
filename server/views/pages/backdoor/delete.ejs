@@ -33,7 +33,7 @@
                     <td class="number"><%=item.number%></td>
                     <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
                     <td class="password"><%=item.password%></td>
-                    <td class="delete"><button id="delete" class="btn btn-light" type="button" onclick="del('<%= item.title %>')">Delete</button></td>
+                    <td class="delete"><button id="delete" class="btn btn-light" type="button" onclick="del('<%= escape(item.title) %>')">Delete</button></td>
                 </tr>
                 <%})%>
                 <%} else {%>
@@ -61,25 +61,40 @@
     <% include ../../partials/swal %>
 
     <script>
-        var del = function(path){
-            if(confirm("Are u sure?") == true){
-                $.ajax({
-                    url: '/delete',
-                    type: 'post',
-                    data: {"title": path, "path":path},
-                    dataType: 'JSON',
-                    async:false,
-                    success: function(result)
-                    {
-                        console.log(result);
-                        if ( result.status == 1 ) {
-                            alert("Delete Complete.");
-                            location.replace("/backdoor/delete");
-                        }
-                    }
-                })
-            }
-        }
+    
+    var deleted = (path) => {
+        $.post('/delete',{title:path}).done(response => {
+            if(response.status == 'success'){
+                swal({
+                    title: "Deleted!",
+                    text: "You deleted the document!",
+                    icon: "success",
+                    //timer: 700,
+                }).then(
+                    () => {location.replace('/backdoor/delete');}  
+                )                
+            };
+        });
+    }
+
+    var del = function(path){
+        path = unescape(path)
+        swal({ 
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this document data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+        .then((willDelete) => {
+            if (willDelete) {
+                return deleted(path);
+            } else {
+                swal("Your document data is safe!");
+            };
+        })
+    }
+
     </script>
     <script>
       $(document).ready(function(){
