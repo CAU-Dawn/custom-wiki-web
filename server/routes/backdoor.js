@@ -61,22 +61,36 @@ router.get('/search', function(req, res){
     if(!search_word){
         res.render('backdoor/search', {title: "Searched", page: "", contents: "", pagination:0  })
     } else {
-        Wikis.findOne({title:search_word}).exec(function(err, wiki){
-            Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
+       
+        let tasks = [ // 동시에 처리할 작업들
+            (callback) => {
+                Wikis.findOne({title:search_word}).then(wiki => callback(null, wiki));
+            },
+
+            (callback) => {
+                Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
                  .ne('title', search_word)
-                 .exec(function(err, totalCount){
-                    pageNum = Math.ceil(totalCount/limitSize);
+                 .then(totalCount => callback(null, totalCount))
+            },
+
+            (callback) => {
                 Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
                      .ne('title', search_word)
                      .sort({date:-1})
                      .skip(skipSize)
                      .limit(limitSize)
-                     .exec(function(err, searchContents){
-                    if(err) throw err;
-                    res.render('backdoor/search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
-                });
-            });
-        });
+                     .then(searchContents => callback(null,searchContents))
+            }
+        ]
+
+        async.parallel(tasks, (err, results) => {
+            wiki = results[0];
+            totalCount = results[1];
+            pageNum = Math.ceil(totalCount/limitSize);
+            searchContents = results[2];
+            if(err) throw err
+            else res.render('search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
+        })
     };
 });
 
