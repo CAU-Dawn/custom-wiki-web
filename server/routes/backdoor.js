@@ -7,7 +7,7 @@ var Trends = require('../models/trend');
 
 
 router.get('/delete', function(req, res){
-    var page = req.param('page');
+    var page = req.query.page;
     if(page == null) {page = 1;}
     var skipSize = (page-1)*10;
     var limitSize = 10;
@@ -48,11 +48,11 @@ router.post('/pwChange', function(req, res){
     })
 })
 
-router.get('/search', function(req, res){
-    var search_word = req.param('searchWord');
+router.get('/search', function (req, res){
+    var search_word = req.query.searchWord;
     var searchCondition = {$regex:search_word}; // regex의 쓰임새가 무엇?
 
-    var page = req.param('page');
+    var page = req.query.page;
     if(page == null) {page = 1;}
     var skipSize = (page-1)*5;
     var limitSize = 5;

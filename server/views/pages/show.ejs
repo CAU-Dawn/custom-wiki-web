@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>산보실록 - <%- title %></title>
+    <title>산보실록 - <%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <%include ../partials/stylesheet %>
@@ -15,7 +15,7 @@
     <% include ../partials/nav %>
     <div class="container">
         <div class="page-header border-bottom" style="margin-bottom: 30px">
-            <h1><%- title %> <button id="typeChange" class="btn float-right btn-light" onclick="typeChange()" type="button">View all - Partial View</button></h1>
+            <h1><%= title %> <button id="typeChange" class="btn float-right btn-light" onclick="typeChange()" type="button">View all - Partial View</button></h1>
         </div>
         <% if(type == 'all'){ %>
             <% var i = 0; %>

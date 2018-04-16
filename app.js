@@ -15,8 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('views', path.join(__dirname, 'server/views/pages'));
 app.set('view engine', 'ejs');
+app.set('view cache', true);
 
-
+mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
@@ -30,11 +31,11 @@ app.use('/backdoor', backdoor); // backdoor로 들어온 라우팅 관리
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    res.status(500).send('Error!');
 }); // 에러 미들웨어 
 
 module.exports = app;
 
-http.createServer(app).listen(80, function(){
-    console.log('Express 서버가 80번 포트에서 시작됨');
+app.listen(80, function(){
+    console.log('Express 모드: '+app.get('env')+', Express 서버가 80번 포트에서 시작됨');
 });

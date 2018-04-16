@@ -39,7 +39,7 @@ exports.create = function(req, res){
                 if(req.body.password){
                     wiki.password = req.body.password;
                 }
-                req.body.title = req.body.title.replace(/(<([^>]+)>)/gi, "");
+                req.body.title = req.body.title.replace(/(<([^>]+)>)/gi, ""); //태그 제거 정규표현식
                 wiki.title = req.body.title;
                 wiki.number = manage.number;
                 wiki.contents = req.body.contents;
@@ -92,7 +92,7 @@ exports.existPw = function(req, res){
 exports.checkPw = function(req, res){
     if(req.body.path){ // path가 존재한다는 건 show page에서 보낸 요청
         Wikis.findOne({title: req.body.path}, function(err, wiki){
-            if(wiki.password == req.body.password){
+            if(wiki.password === req.body.password){
                 res.send({status:'success'});
             }// 패스워드 성공 
             else
