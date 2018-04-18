@@ -61,7 +61,7 @@
     <% include ../../partials/swal %>
 
     <script>
-
+    
     var deleted = (path) => {
         $.post('/delete',{title:path}).done(response => {
             if(response.status == 'success'){
@@ -85,7 +85,7 @@
             icon: "warning",
             buttons: true,
             dangerMode: true,
-        })
+            })
         .then((willDelete) => {
             if (willDelete) {
                 return deleted(path);
@@ -95,7 +95,6 @@
         })
     }
 
-       
     </script>
     <script>
       $(document).ready(function(){
