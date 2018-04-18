@@ -57,3 +57,17 @@
         })
     }
 </script>
+<script>
+  $(document).ready(function() {
+    $(window).bind('scroll', function() {
+      var navHeight = $( window ).height() - 66;
+      if($(window).width() < 640 && $(window).scrollTop() > navHeight){
+        $('.navbar-toggler').bind('click', function(){
+          $(".navbar").toggleClass("fixedtoggle");
+        });
+      }
+    });
+  });
+
+
+</script>
