@@ -93,24 +93,26 @@
                     content: "input",
                     button: {
                         text: "Check!",
-                        closeModal: false,
                     },
                 })
                 .then(password => {
-                    if(!password) throw Error;
+                    if(!password) throw null;
 
                     return checkPW(path, password);
                 })
                 .then(response => {
                     if(response.status == 'success'){
-                        swal.close();
                         return editInit(num);
                     } else {
                         swal("Error!", "Password doesn't match!", "error");
                     }
                 })
                 .catch(err => {
-                    swal.close();
+                    if(err){
+                        console.log(err);
+                    } else {
+                        swal.stopLoading();
+                    }
                 })
             } else { // 비밀번호가 존재하지 않으면
                 return editInit(num);
@@ -236,11 +238,10 @@
                     content: "input",
                     button: {
                         text: "Check!",
-                        closeModal: false,
                     },
                 })
                 .then(password => {
-                    if(!password) throw Error;
+                    if(!password) throw null;
 
                     return checkPW(path, password);
                 })
@@ -252,7 +253,11 @@
                     }
                 })
                 .catch(err => {
-                    swal.close();
+                    if(err){
+                        console.log(err);
+                    } else {
+                        swal.stopLoading();
+                    }
                 })
             } else {
                 return deleted(path);
