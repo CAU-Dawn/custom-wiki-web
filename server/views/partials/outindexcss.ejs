@@ -1,0 +1,105 @@
+<style type=text/css> /*상단고정 nav*/
+  /*html부분 indexcontainer div 추가된거 주의*/
+  #indexcontainer nav{
+    background-color: black;
+    color:white;
+    position: fixed;
+    top:0;
+    width:100%;
+  }
+  #indexcontainer nav a{
+    color: white;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    /*font-family: 'Poiret One', cursive;*/
+    font-family: 'ABeeZee', sans-serif;
+  }
+  #indexcontainer nav a:hover{
+    color: gray;
+  }
+  .btn{
+    /*font-family: 'Poiret One', cursive;*/
+    font-family: 'ABeeZee', sans-serif;
+  }
+  .btn-outline-success{
+    color:white;
+    border-color:white;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    /*font-family: 'Poiret One', cursive;*/
+    font-family: 'ABeeZee', sans-serif;
+  }
+  .btn-outline-success:hover{
+    background-color:rgb(255,243,180,0.05);
+    color:rgb(255,243,180);
+    border-color:#ffd700;
+  }
+  form.form-inline .form-control{
+    font-family: 'ABeeZee', sans-serif;
+  }
+
+  form.form-inline .form-control{
+
+  }
+
+  ul.navbar-nav li{
+    margin: 5px 7px 5px 7px;
+  }
+  .navbar-light .navbar-toggler{
+    color:white;
+    border-color:white;
+  }
+  button.navbar-toggler{
+    background-color:white;
+  }
+
+  button.navbar-toggler span{
+    background-color:white;
+    color:white;
+    fill:white;
+  }
+
+
+  @media screen and (min-width:769px)/*PC*/ {
+      #navbarNav{
+        /*max-width:500px;*/
+      }
+
+      #indexcontainer > nav > div.topushright{
+        float:right;
+      }
+  }
+
+  @media screen and (max-width:769px)/*ipad*/ {
+      input#searchWord.form-control.mr-sm-2{
+        width:100px;
+      }
+  }
+
+  @media screen and (max-width:640px)/*phone*/ {
+      /*#indexcontainer nav a{
+        font-size: 20px;*/
+      /*a.navbar-brand{
+        margin-left: 0;
+      }*/
+      a.navbar-brand{
+        margin-right: 0;
+      }
+      input#searchWord.form-control.mr-sm-2{
+        width:125px;
+      }
+      #indexcontainer > nav > form > button{
+
+      }
+      #searchWord{
+        border-radius: .25rem 0 0 .25rem;
+      }
+      #indexcontainer > nav > div.topushright > form > button{
+        border-radius: 0 .25rem .25rem 0;
+      }
+      #indexcontainer > nav > button.navbar-toggler{
+        padding: .25rem .5rem;
+      }
+  }
+
+</style>

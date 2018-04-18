@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>산보실록 - <%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <% include ../partials/stylesheet %>
+    <% include ../partials/outindexcss %>
+    <% include ../partials/ck %>
+    <% include ../partials/meta %>
+    
+
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="page-header">
+            <h1>Here to create.</h1>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" id="title" class="form-control" placeholder="Title" value='<%=title%>'>
+        </div>
+        <div class="create-editor">
+            <button id='submit' class='btn btn-primary' onclick='checkPw()' type='button'>Create</button>
+            <div id='editor'>
+            </div>
+        </div>
+
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="checkBox" onClick="password()">
+            <label class="custom-control-label" for="checkBox">Password Setting</label>
+        </div>
+
+        <div id="passwordBox" class="form-group" style="display:none">
+            <input type="password" id="password" placeholder="Password..." class="form-control mx-sm-3" aria-describedby="passwordHelpInline" style="width:250px">
+        </div>
+    </div>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+    <% include ../partials/swal %>
+
+    <script type="text/javascript">
+
+    CKEDITOR.replace('editor');
+    
+    var editor = document.getElementById('editor');
+    editor.contentEditable="true";
+
+        var checkPw = () => {
+            swal({
+                title: 'Public Password',
+                text: 'Enter public password! (Hint : 산업보안학과 과방)',
+                content: "input",
+                button: {
+                    text: "Check!",
+                    closeModal: false,
+                }
+            })
+            .then(password => {
+                if(!password) throw Error;
+
+                $.post('/checkPw',{password:password}).done(response =>{
+                    if(response.status != 'success'){ // 만약 비밀번호를 틀리면
+                        swal("Error!", "Password doesn't match!", "error");
+                    } else {
+                        swal.close();
+                        submit();
+                    }
+                })
+            })
+            .catch(() => {
+                swal.close();
+            })
+        }
+    
+        var submit = () => {
+            var contents = CKEDITOR.instances.editor.getData();
+            var title = $('#title').val();
+            var password = $('#password').val();
+
+            title = title.replace(/^\s*|\s*$/g, "");
+            title = title.replace(/(<([^>]+)>)/gi, ""); // title 스크립트 어떻게 방지?
+
+            console.log(contents);
+            console.log(title);
+            if(title){
+                $.post('/create',{contents:contents, title:title, password:password}).done(response => {
+                    if ( response.status == 'success' ) {
+                        location.replace("/show?id="+response.newtitle);
+                    } else {
+                        swal("Error!", "Wiki title already exists.", "error");
+                    }
+                })
+            } else {
+                swal("Error!", "Title can't blank.", "error");
+            }
+        }; 
+    
+    var password = function(){
+        var checkBox = document.getElementById("checkBox")
+        var password = document.getElementById("passwordBox")
+    
+        if(checkBox.checked == true){
+            password.style.display = "block"
+        } else {
+            password.style.display = "none"
+        }
+    }
+    </script>    
+    
+   <script>
+     $(document).ready(function(){
+       $(window).bind('scroll', function() {
+       var navHeight = $( window ).height() - 70;
+         if ($(window).scrollTop() > navHeight) {
+           $('nav').addClass('fixed');
+         }
+         else {
+           $('nav').removeClass('fixed');
+         }
+       });
+     });
+   </script>
+
+</body>
+</html>

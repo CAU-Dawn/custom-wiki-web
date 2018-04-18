@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <% include ../partials/stylesheet %>
+    <% include ../partials/outindexcss %>
+    <% include ../partials/meta %>
+    
+
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="page-header">
+            <h2>주의사항</h2>
+            <div>
+                <ul>
+                    <li><p>위키 페이지는 모두가 볼 수 있는 공간입니다. 남에게 보여지기 싫은 내용은 개인 일기장에 적어주세요.</p></li>
+                    <li><p>비밀번호는 초기에 설정하지 않을 시, 다시는 설정 불가능 합니다. 이 점 유의하시고 비밀번호 설정해 주세요.</p></li>
+                    <li><p>비밀번호를 잊어버린 경우, 관리자에게 문의하여 주십시오.</p></li>
+                    <li><p>자식처럼 여겨주세요.^^</p></li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-header">
+            <h2>건의사항</h2>
+            <div>
+                <ul>
+                    <li><p>건의사항은 언제나 받고 있습니다. 아래 페이지로 접속하셔서 건의사항을 추가해 주세요.ㅎㅎ</p></li>
+                    <li><p>건의사항은 페이지의 발전에 큰 도움이 됩니다.^^</p></li>
+                    <li><a href="show?id=건의사항">건의사항</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-header">
+            <h2>사용방법</h2>
+            <div>
+                <ul>
+                    <li><p>아~ 위키 이용은 처음이시구나~ 그럴 줄 알고 준비했습니다!</p></li>
+                    <li><p>사용방법은 아래의 페이지에서 잘 살펴봐주세요.</p></li>
+                    <li><a href="show?id=사용방법">사용방법</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-header">
+            <h2>Developed by.</h2>
+            <div>
+                <ul>
+                    <li><p>강명신 - <a href = "show?id=강명신">강명신</a></p></li>
+                    <li><p>조현우 - <a href = "show?id=조현우">조현우</a></p></li>
+                    <li><p>김준기 - <a href = "show?id=김준기">김준기</a></p></li>
+                    <li><p>김대기 - <a href = "show?id=김대기">김대기</a></p></li>
+                    <li><p>김하윤 - <a href = "show?id=김하윤">김하윤</a></p></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+    <% include ../partials/swal %>
+    
+
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+
+</body>
+</html>

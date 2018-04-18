@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <%include ../../partials/stylesheet %>
+    <%include ../../partials/outindexcss %>
+    <% include ../../partials/meta %>
+
+</head>
+<body>
+    <% include ../../partials/nav_backdoor %>
+    <div class="container">
+        <div class="page-header">
+            <h1><a class="text-dark" href="/backdoor/delete">Delete Page</a></h1>
+        </div>
+        <div >
+            <div >
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>password</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%if(contents.length>0){%>
+                <%contents.forEach(function(item){%>
+                <tr>
+                    <td class="number"><%=item.number%></td>
+                    <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
+                    <td class="password"><%=item.password%></td>
+                    <td class="delete"><button id="delete" class="btn btn-light" type="button" onclick="del('<%= item.title %>')">Delete</button></td>
+                </tr>
+                <%})%>
+                <%} else {%>
+                <tr>
+                    <td colspan="5">게시물이 없습니다.</td>
+                </tr>
+                <%}%>
+                </tbody>
+            </table>
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <%
+                    for(var i=1; i<=pagination; i++){
+                    %>
+                    <li class="page-item"><a class="page-link" href="/backdoor/delete?page=<%=i%>"><%=i%></a></li>
+                     <%}%>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <% include ../../partials/footer %>
+    <% include ../../partials/javascript %>
+    <% include ../../partials/swal %>
+
+    <script>
+        var del = function(path){
+            if(confirm("Are u sure?") == true){
+                $.ajax({
+                    url: '/delete',
+                    type: 'post',
+                    data: {"title": path, "path":path},
+                    dataType: 'JSON',
+                    async:false,
+                    success: function(result)
+                    {
+                        console.log(result);
+                        if ( result.status == 1 ) {
+                            alert("Delete Complete.");
+                            location.replace("/backdoor/delete");
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+</body>
+</html>

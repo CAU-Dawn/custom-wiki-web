@@ -1,0 +1,31 @@
+{
+  "name": "shin",
+  "version": "1.0.0",
+  "description": "Chung-Ang University \\ Dept.Industrial_Security \\ MOSE \\ wiki_project_team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "helmet": "^3.12.0",
+    "jquery": "^3.3.1",
+    "mongoose": "^5.0.8",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "bower": "^1.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CauisMose/node-wiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CauisMose/node-wiki/issues"
+  },
+  "homepage": "https://github.com/CauisMose/node-wiki#readme"
+}

@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>산보실록 - <%- title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
+    <% include ../partials/ck %>
+    <% include ../partials/meta %>
+
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <div class="page-header border-bottom" style="margin-bottom: 30px">
+            <h1><%- title %> <button id="typeChange" class="btn float-right btn-light" onclick="typeChange()" type="button">View all - Partial View</button></h1>
+        </div>
+        <% if(type == 'all'){ %>
+            <% var i = 0; %>
+        <button id="edit<%=i%>" class="btn float-right btn-light" onclick="edit('<%= i %>')" type="button" style="display:inline" >Edit</button>
+        <button id="submit<%=i%>" class="btn float-right btn-light" onclick="submitAll('<%= i %>')" type="button" style="display:none">Submit</button>
+
+        <div class="border border-white" style="margin-bottom: 30px" id="editor<%=i%>">
+                <%-data%>
+        </div>
+
+            <% } else { %>
+        <% var item = data%>
+        <% item = item.replace(/<h2>/gi,'분할<h2>') %>
+        <% var itemArr = item.split('분할')%>
+        <% for(var i=0; i<itemArr.length; i++){%>
+        <% if(itemArr[i]=='') continue;%>
+        <button id="edit<%=i%>" class="btn float-right btn-light" onclick="edit('<%= i %>')" type="button" style="display:inline" >Edit</button>
+        <button id="submit<%=i%>" class="btn float-right btn-light" onclick="submit('<%= i %>')" type="button" style="display:none">Submit</button>
+
+        <div class="border border-white" style="margin-bottom: 15px" id="editor<%=i%>">
+                <%-itemArr[i]%>
+        </div>
+
+        <%}%>
+        <%}%>
+        <button id="delete" class="btn float-right btn-black" onclick="del()" type="button" >Delete</button>
+
+    </div>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>  
+    <% include ../partials/swal %>  
+    
+    <script type="text/javascript">
+
+    var typeChange = () => {
+        var path = getParameterByName('id');
+        var type = getParameterByName('type');
+        if(type == 'all') type = 'partial';
+        else type = 'all';
+       location.href ='show?id='+path+'&type='+type;
+    }
+
+    if(getParameterByName('type') == 'partial'){
+        var item = '<%-JSON.stringify(data)%>'
+        var item = item.replace(/<h2>/gi,'분할<h2>')
+        var itemArr = item.split('분할')
+    } else
+        var itemArr = [];
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    } // Parameter를 가져오는 함수
+
+    /*  edit 과정
+        {edit} -> {existPw}
+                if(!password) {editInit}
+                else {checkPw}
+                    if(password == right) {editInit}
+                    else Error
+
+    */
+
+    var edit = (num) => { 
+        var path = getParameterByName('id')
+
+        existPw(path).then(function(response){
+            if(response.status == 'existent'){ // 비밀번호가 존재하면
+                swal({
+                    title:'Password',
+                    text: 'Enter your password!!',
+                    content: "input",
+                    button: {
+                        text: "Check!",
+                        closeModal: false,
+                    },
+                })
+                .then(password => {
+                    if(!password) throw Error;
+
+                    return checkPW(path, password);
+                })
+                .then(response => {
+                    if(response.status == 'success'){
+                        swal.close();
+                        return editInit(num);
+                    } else {
+                        swal("Error!", "Password doesn't match!", "error");
+                    }
+                })
+                .catch(err => {
+                    swal.close();
+                })
+            } else { // 비밀번호가 존재하지 않으면
+                return editInit(num);
+            }
+        })
+    };
+
+    var editInit = (num) => {
+        var editorNum = 'editor'+num;
+        var editor = document.getElementById(editorNum);
+        CKEDITOR.replace(editorNum);
+        $("#submit"+num).css("display","inline");
+        $("#edit"+num).css("display","none");
+    }
+
+    var submitAll = (num) => {
+        $("#edit"+num).css("display","inline");
+        $("#submit"+num).css("display","none");
+        var editorNum = 'editor'+num;
+        var editor = document.getElementById(editorNum);
+
+        var contents = CKEDITOR.instances[editorNum].getData();
+
+        var path = getParameterByName('id') // param의 id값 받기
+
+        $.post('/',{'contents':contents, 'title':path}).done(response => {
+            if(response.status === 1){
+                CKEDITOR.instances[editorNum].destroy();
+                editor.contentEditable = false;
+            }
+        })
+    }
+
+    var submit = (num) => {
+        $("#edit"+num).css("display","inline");
+        $("#submit"+num).css("display","none");
+        var editorNum = 'editor'+num;
+        var editor = document.getElementById(editorNum);
+
+        itemArr[num] = CKEDITOR.instances[editorNum].getData();
+        var contents = itemArr.join('');
+        if(contents[0]=='\"') // join을 안하는 경우 맨 앞이 "
+            contents = contents.slice(1,-1); // join할 시 맨 앞,뒤에 ""제거
+
+        var path = getParameterByName('id') // param의 id값 받기
+
+        $.post('/',{'contents':contents, 'title':path}).done(response => {
+            if(response.status === 1){
+                CKEDITOR.instances[editorNum].destroy();
+                editor.contentEditable = false;
+            }
+        })
+    };
+
+    var existPw = (path) => {
+        return new Promise((resolve, reject) => {
+            $.post('/existPw',{"path":path}).done(response => {
+              if(response){
+                resolve(response);
+              } else
+              reject(new Error('ExistPw Request is Failed.')); 
+            }); 
+        });
+    }
+
+    var checkPW = (path, password) => {
+        return new Promise((resolve, reject) => {
+            let path = getParameterByName('id');
+            $.post('/checkPw', {"path":path, "password":password}).done(response => {
+                if(response)
+                    resolve(response);
+                else    
+                    reject(new Error('CheckPw Request is Failed.'))
+            })
+        })
+    }
+
+    /*  del 과정
+        {del} -> {existPw}
+                if(!password) {deleted}
+                else {checkPw}
+                    if(password == right) {deleted}
+                    else Error
+
+    */
+
+    var deleted = (path) => {
+        $.post('/delete',{title:path}).done(response => {
+            if(response.status == 'success'){
+                swal({
+                    title: "Deleted!",
+                    text: "You deleted the document!",
+                    icon: "success",
+                    //timer: 700,
+                }).then(
+                    () => {location.replace('/');}  
+                )                
+            };
+        });
+    }
+
+    var del = () => {
+        var path = getParameterByName('id');
+        swal({ 
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this document data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+        .then((willDelete) => {
+            if (willDelete) {
+                return existPw(path);
+            } else {
+                swal("Your document data is safe!");
+            };
+        })
+        .then(response => {
+            if(response.status == 'existent'){
+                swal({
+                    title: 'Password',
+                    text: 'Enter your password!',
+                    content: "input",
+                    button: {
+                        text: "Check!",
+                        closeModal: false,
+                    },
+                })
+                .then(password => {
+                    if(!password) throw Error;
+
+                    return checkPW(path, password);
+                })
+                .then(response => {
+                    if(response.status == 'success'){
+                        return deleted(path);
+                    } else {
+                        swal("Error!", "Password doesn't match!", "error");
+                    }
+                })
+                .catch(err => {
+                    swal.close();
+                })
+            } else {
+                return deleted(path);
+            }
+        })
+    }
+
+    </script>
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+
+</body>
+</html>

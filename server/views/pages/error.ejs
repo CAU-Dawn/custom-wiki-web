@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
+    <%include ../partials/stylesheet %>
+    <%include ../partials/outindexcss %>
+    <% include ../partials/meta %>
+
+
+</head>
+<body>
+    <% include ../partials/nav %>
+    <div class="container">
+        <h1>요청하신 페이지를 찾을 수 없습니다.</h1>
+        <h2>페이지를 만드시겠습니까?
+        <button id="create" class="btn btn-light" onclick="toCreate()" type="button" style="display:inline">Create</button></h2>
+        <h2>장난치지 마세요. ㅡ3ㅡ
+        <button id="Door" class="btn btn-light" onclick="toDoor()" type="button" style="display:inline">대문으로 가기</button></h2>
+    </div>
+
+
+    <script type="text/javascript">
+        var toCreate = function(){
+            location.replace("/create");
+        }
+        var toDoor = function(){
+            location.replace("/");
+        }
+    </script>
+
+    <% include ../partials/footer %>
+    <% include ../partials/javascript %>
+    <% include ../partials/swal %>
+    
+    <script>
+      $(document).ready(function(){
+        $(window).bind('scroll', function() {
+        var navHeight = $( window ).height() - 70;
+          if ($(window).scrollTop() > navHeight) {
+            $('nav').addClass('fixed');
+          }
+          else {
+            $('nav').removeClass('fixed');
+          }
+        });
+      });
+    </script>
+
+</body>
+</html>
