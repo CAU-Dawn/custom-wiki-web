@@ -62,34 +62,26 @@ router.get('/search', function (req, res){
         res.render('backdoor/search', {title: "Searched", page: "", contents: "", pagination:0  })
     } else {
        
-        let tasks = [ // 동시에 처리할 작업들
-            (callback) => {
-                Wikis.findOne({title:search_word}).then(wiki => callback(null, wiki));
-            },
-
-            (callback) => {
-                Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
+        let finding = Wikis.findOne({title:search_word}) // 검색어와 일치하는 문서
+    
+        let counting = Wikis.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
+             .ne('title', search_word) // 검색어를 포함한 문서들의 갯수
+           
+        let exceptFinding = Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
                  .ne('title', search_word)
-                 .then(totalCount => callback(null, totalCount))
-            },
-
-            (callback) => {
-                Wikis.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition}]})
-                     .ne('title', search_word)
-                     .sort({date:-1})
-                     .skip(skipSize)
-                     .limit(limitSize)
-                     .then(searchContents => callback(null,searchContents))
-            }
-        ]
-
-        async.parallel(tasks, (err, results) => {
-            wiki = results[0];
-            totalCount = results[1];
+                 .sort({date:-1})
+                 .skip(skipSize)
+                 .limit(limitSize) // 검색어를 포함한 문서들
+                
+        Promise.all([finding, counting, exceptFinding]).then(results => {
+            let wiki = results[0];
+            let totalCount = results[1];
             pageNum = Math.ceil(totalCount/limitSize);
-            searchContents = results[2];
-            if(err) throw err
-            else res.render('search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
+            let searchContents = results[2];
+            
+            res.render('search', {title: search_word, page: wiki, contents: searchContents, pagination: pageNum});
+        }).catch(err => {
+            console.log("Search Error: ",err);
         })
     };
 });
