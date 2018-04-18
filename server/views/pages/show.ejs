@@ -18,7 +18,7 @@
             <h1><%= title %> <button id="typeChange" class="btn float-right btn-light" onclick="typeChange()" type="button">View all - Partial View</button></h1>
         </div>
         <% if(type == 'all'){ %>
-            <% var i = 0; %>
+            <% var i = -1; %>
         <button id="edit<%=i%>" class="btn float-right btn-light" onclick="edit('<%= i %>')" type="button" style="display:inline" >Edit</button>
         <button id="submit<%=i%>" class="btn float-right btn-light" onclick="submitAll('<%= i %>')" type="button" style="display:none">Submit</button>
 
