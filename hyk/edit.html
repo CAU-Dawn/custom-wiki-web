@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<!--편집-->
+<html>
+  <head>
+    <title>위키위키 - edit</title>
+    <link rel="stylesheet" href="/extra.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="/autosize.min.js"></script>
+    <style>
+    textarea {
+      outline: none;
+		  border: 0px solid;
+		  overflow:hidden;
+      resize:none;
+      margin-bottom: 100px;
+    }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand">산보위키</a>
+      </div>
+      <div id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/{{ link }}">View</a></li>
+          <li class="active"><a>Edit</a></li>
+          <li><a href="/upload/image/edit/{{ link }}">Upload</a></li>
+        </ul>
+				<form class="navbar-form navbar-right" role="search" method="POST" action="/search/">
+  				<div class="form-group">
+    				<input id="searchbox" name="searchbox" type="text" class="form-control">
+  				</div>
+  				<button type="submit" class="btn btn-default">페이지 검색</button>
+				</form>
+
+      </div>
+    </div>
+    </nav>
+
+    <div class="container"><!--편집 부분 컨테이너-->
+      <form method="POST" action="/save/{{ link }}">
+      <div class="page-header">
+        <input class="col-xs-12" type="text" style="border:0px solid;font-size:36px;" autocomplete="off" name="title" placeholder="제목 작성" value="{{ title }}"></input>
+      </div>
+      <textarea id="textbox" class="col-xs-12" name="text" rows="3" placeholder="내용 작성">{{ text }}</textarea>
+		  <button type="submit" class="btn btn-primary">저장</button>
+	    </form>
+
+    </div>
+		<br><br>
+		<footer class="footer">
+      <div class="container">
+			<p class="text-muted"> Edit과 Upload를 동시에 할 수 없으므로 저장하고 진행하세요 </p>
+			</div>
+		</footer>
+
+  </body>
+</html>
