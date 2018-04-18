@@ -59,12 +59,9 @@
        location.href ='show?id='+path+'&type='+type;
     }
 
-    if(getParameterByName('type') == 'partial'){
-        var item = '<%-JSON.stringify(data)%>'
-        var item = item.replace(/<h2>/gi,'분할<h2>')
-        var itemArr = item.split('분할')
-    } else
-        var itemArr = [];
+    var item = '<%-JSON.stringify(data)%>'
+    var item = item.replace(/<h2>/gi,'분할<h2>')
+    var itemArr = item.split('분할')
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -152,7 +149,7 @@
         var editorNum = 'editor'+num;
         var editor = document.getElementById(editorNum);
 
-        itemArr[num] = CKEDITOR.instances[editorNum].getData();
+        itemArr[num] = CKEDITOR.instances[editorNum].getData(); // 이 부분 때문에 저장이 되는구낭
         var contents = itemArr.join('');
         if(contents[0]=='\"') // join을 안하는 경우 맨 앞이 "
             contents = contents.slice(1,-1); // join할 시 맨 앞,뒤에 ""제거
