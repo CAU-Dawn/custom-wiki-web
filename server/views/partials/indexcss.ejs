@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/stylesheets/extra.css">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-<style type=text/css>
-html{
+<style type="text/css">
+    html{
       background-color: black;
     }
     body{
@@ -82,13 +82,14 @@ html{
       }
     }
 </style>
-<style type=text/css> /*상단고정 nav*/
+<style type="text/css"> /*상단고정 nav*/
   /*html부분 indexcontainer div 추가된거 주의*/
   .fixed{
     position: fixed !important;
     top: 0px !important;
     z-index: 50;
     height:66px;
+
   }
   .fixedtoggle{
     height: 350px;
@@ -96,7 +97,7 @@ html{
 
   #indexcontainer{
     width:100vw;
-    height:100vh;
+    /*height:100vh;*/
     margin:0;
     padding:0;
 
@@ -112,16 +113,27 @@ html{
   }
   #whitepart{
     width:29%;
-    background-color:white;
+    background-color:*white;
+    color:darkgrey;
     display:inline-block;
     margin-bottom:-6px;
     margin-left:-2px;
+    float:right;
+    padding: 10px;
+    font-family: 'Raleway', sans-serif;
+    position:relative;
   }
+  #insidewhitepart{
+    position: absolute;
+    bottom: 50px;
+  }
+
   #sanbosillock{
     position:absolute;
     z-index:10px;
     top:4%;
     left:5%;
+
   }
   #graypart{
     position:absolute;
@@ -135,7 +147,7 @@ html{
   }
 
 
-  #indexcontainer nav{
+  /*#indexcontainer */nav{
     background-color: black;
     color:white;
     /*position: absolute;
@@ -149,8 +161,8 @@ html{
   }
 
 
-  #indexcontainer nav a{
-    color: white;
+  /*#indexcontainer */nav a{
+    color: white !important;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     /*font-family: 'Poiret One', cursive;*/
@@ -200,6 +212,14 @@ html{
     color:white;
     fill:white;
   }
+  .fillam{
+    width: 100%;
+    height: 66px;
+    display: none;
+  }
+  .displaystatic{
+    display: block !important;
+  }
 
 
   @media screen and (min-width:769px)/*PC*/ {
@@ -210,11 +230,25 @@ html{
       #indexcontainer > nav > div.topushright{
         float:right;
       }
+      .upcount_num{
+        font-size:70px;
+      }
+
+      .upcount{
+        font-size:30px;
+      }
   }
 
   @media screen and (max-width:769px)/*ipad*/ {
       input#searchWord.form-control.mr-sm-2{
         width:100px;
+      }
+      .upcount_num{
+        font-size:40px;
+      }
+
+      .upcount{
+        font-size:17px;
       }
   }
 
@@ -230,17 +264,24 @@ html{
       input#searchWord.form-control.mr-sm-2{
         width:125px;
       }
-      #indexcontainer > nav > form > button{
+      /*#indexcontainer > */nav > form > button{
 
       }
       #searchWord{
         border-radius: .25rem 0 0 .25rem;
       }
-      #indexcontainer > nav > div.topushright > form > button{
+      /*#indexcontainer > */nav > div.topushright > form > button{
         border-radius: 0 .25rem .25rem 0;
       }
-      #indexcontainer > nav > button.navbar-toggler{
+      /*#indexcontainer > */nav > button.navbar-toggler{
         padding: .25rem .5rem;
+      }
+      .upcount_num{
+        font-size:30px;
+      }
+
+      .upcount{
+        font-size:13px;
       }
   }
   </style>

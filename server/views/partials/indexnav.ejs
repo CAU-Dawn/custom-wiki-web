@@ -1,44 +1,56 @@
-  <div id="sanbosillock"><img src="../images/sanbologo.png" width="250px"/></div>
+<div>
+  <div id="sanbosillock"><img src="./산보실록_unsticky_files/sanbologo.png" width="250px"></div>
   <div id="graypart"></div>
   <div id="currently">
   </div>
   <div id="indexcontainer">
-    <div id="blackpart"></div>
-    <div id="whitepart">
+    <div id="blackpart" style="min-height: 716px;"></div>
+    <div id="whitepart" style="min-height: 716px;">
+      <div id="insidewhitepart">
+        <div id="days_num" class="upcount_num"><%= daynum -%></div>
+        <div id="days" class="upcount">Days Proceeding</div>
+        <div id="wikies_num" class="upcount_num"><%=  documentcount -%></div>
+        <div id="wikies" class="upcount">Wikies Written</div>
+        <div id="people_num" class="upcount_num"><%= '183' -%></div>
+        <div id="people" class="upcount">People Participated</div>
+      </div>
     </div>
-    <nav class="navbar navbar-expand-md navbar-light navbar-fixed-top">
-        <a class="navbar-brand" href="/">ISSl</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/list">List</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/recentchange">Changed</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/trends">Trends</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/about">About</a>
-            </li>
-            <button type="button" id="random" onclick="random()" class="btn btn-outline-secondary">Random</button>
-          </ul>
-        </div>
-        <div class="topushright">
-            <form class="form-inline " role="search" method="GET" action="/search">
-                <input id="searchWord" name="searchWord" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
-            </form>
-        </div>
-      </nav>
+
+  </div>
+  <div class="fillam"></div>
+  <nav class="navbar navbar-expand-md navbar-light navbar-fixed-top">
+    <a class="navbar-brand" href="http://13.124.229.163/">ISSl</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="http://13.124.229.163/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://13.124.229.163/list">List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://13.124.229.163/recentchange">Changed</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://13.124.229.163/trends">Trends</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://13.124.229.163/about">About</a>
+        </li>
+        <button type="button" id="random" onclick="random()" class="btn btn-outline-secondary">Random</button>
+      </ul>
     </div>
+    <div class="topushright">
+      <form class="form-inline " role="search" method="GET" action="http://13.124.229.163/search">
+        <input id="searchWord" name="searchWord" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+      </form>
+    </div>
+  </nav>
+</div>
 <script>
     var random = function(){
         $.ajax({

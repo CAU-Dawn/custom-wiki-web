@@ -5,8 +5,19 @@ var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 var Trends = require('../models/trend');
 const async = require('async');
+require('date-utils');
+
+var todaydt = new Date();
+var countpub = (new Date('05/14/2018').getTime())/(60*60*24*1000)
+var counttoday = (todaydt.getTime())/(60*60*24*1000)
+var ddtt = Math.ceil(counttoday - countpub)
+
+var app = require('../../app');
+ 
+//var manager = Manages.find({title:"manager1"})
 
 router.get('/', function(req, res, next){
+    Manages.findOne({title: 'manager1'},function(err, manage){
     Wikis.find({}).sort({date:-1}).exec(function(err, wikis){
         // db에서 날짜 순으로 데이터들을 가져옴
         Wikis.findOne({title: 'Door'}, function(err, wiki){
@@ -20,13 +31,15 @@ router.get('/', function(req, res, next){
                  });
         res.render('index', {
             title: "산보실록",
+            documentcount: manage.number,////
+            daynum : ddtt, ///
             data : wiki.contents,
             contents: wikis,
             status:1
         });
         // board.ejs의 title변수엔 “Board”를, contents변수엔 db 검색 결과 json 데이터를 저장해줌.
         });
-
+    });
     });
 });
 router.post('/', wikicon.edit );
