@@ -5,7 +5,6 @@ var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 var Trends = require('../models/trend');
 const async = require('async');
-require('date-utils');
 
 var todaydt = new Date();
 var countpub = (new Date('05/14/2018').getTime())/(60*60*24*1000)
