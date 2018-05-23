@@ -7,7 +7,7 @@ var Trends = require('../models/trend');
 const async = require('async');
 
 var todaydt = new Date();
-var countpub = (new Date('05/14/2018').getTime())/(60*60*24*1000)
+var countpub = (new Date('05/23/2018').getTime())/(60*60*24*1000)
 var counttoday = (todaydt.getTime())/(60*60*24*1000)
 var ddtt = Math.ceil(counttoday - countpub)
 
