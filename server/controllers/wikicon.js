@@ -2,6 +2,8 @@ var Wikis = require('../models/wiki');
 var Manages = require('../models/manage');
 var Trends = require('../models/trend');
 
+
+
 exports.edit = function(req, res){ 
     Wikis.findOne({'title': req.body.title}, function(err,wiki){
         if(!wiki) return res.status(404).json({error: "wiki does not exist"});
@@ -28,6 +30,7 @@ exports.edit = function(req, res){
             });
         });
 };
+
 
 exports.create = function(req, res){
     Manages.findOne({title: 'manager1'},function(err, manage){
@@ -64,19 +67,30 @@ exports.create = function(req, res){
                     }
                 })
             }
-        });
+        }); //wiki findone
 
-    });
+    }); //manage fine 
 };
 
 exports.delete = function(req, res){
-        Wikis.remove({title: req.body.title}, function(err, output){
-            Trends.remove({title:req.body.title}, function(err, output){
-            }); // 만약 trend에 있다면 해당 document 지우기
-            if(err) return res.status(500).json({ error: "database failure" });
-            res.send({status:'success'});    
-        })
+    Wikis.findOne({title: req.body.title}, function(err, wiki){
+        if(wiki.permission==1){
+            Wikis.remove({title: req.body.title}, function(err, output){
+                Trends.remove({title:req.body.title}, function(err, output){
+                }); // 만약 trend에 있다면 해당 document 지우기
+                if(err) return res.status(500).json({ error: "database failure" });
+                res.send({status:'success'});    
+            })
+        }
+        if(wiki.permission==0){
+            if(err)  return res.status(500).json({ error: "database failure" });
+            res.send({status:'fail'});
+        }
+    })
+
+
 };
+
 
 exports.existPw = function(req, res){
     Wikis.findOne({title:req.body.path}, function(err, wiki){

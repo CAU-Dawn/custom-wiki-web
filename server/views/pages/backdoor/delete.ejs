@@ -74,6 +74,14 @@
                     () => location.replace("/backdoor/delete")
                 )                
             };
+            if(response.status == 'fail'){
+                swal({
+                    title:"Don't do that!",
+                    text: "You can't delete this document!",
+                    icon: "warning"
+
+                })
+            }
         });
     }
 
