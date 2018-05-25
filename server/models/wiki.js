@@ -8,7 +8,8 @@ var wikiSchema = new mongoose.Schema({
     number: { type: Number, default: 0},
     viewCount: { type: Number, default: 0},
     date: { type: Date, default: Date.now },
-    deleted : {type: Boolean, default:false}
+    deleted : {type: Boolean, default:false},
+    permission : {type: Number, default:1}
 })
 
 module.exports = mongoose.model('Wikis', wikiSchema);
