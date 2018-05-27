@@ -87,7 +87,12 @@
                 swal({
                     title:'Password',
                     text: 'Enter your password!!',
-                    content: "input",
+                    content: {
+                        element: "input",
+                        attributes: {
+                            type: "password",
+                        },
+                    },
                     button: {
                         text: "Check!",
                     },
@@ -240,7 +245,12 @@
                 swal({
                     title: 'Password',
                     text: 'Enter your password!',
-                    content: "input",
+                    content: {
+                        element:"input",
+                        attributes:{
+                            type : "password",
+                        },
+                    },
                     button: {
                         text: "Check!",
                     },
