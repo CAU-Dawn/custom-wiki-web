@@ -6,7 +6,7 @@ var Manages = require('../models/manage');
 var Trends = require('../models/trend');
 const async = require('async');
 
-var todaydt = new Date();
+
 var countpub = (new Date('05/23/2018').getTime())/(60*60*24*1000)
 
 
@@ -27,6 +27,7 @@ router.get('/', function(req, res, next){
                     contents: wikis,
                     status:0
                  });
+                 var todaydt = new Date();
                  var counttoday = (todaydt.getTime())/(60*60*24*1000)
         res.render('index', {
             title: "산보실록",
@@ -166,6 +167,7 @@ router.get('/list', function(req, res){
 })
 
 router.post('/delete', wikicon.delete);
+
 
 router.post('/existPw', wikicon.existPw);
 
