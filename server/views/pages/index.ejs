@@ -14,17 +14,6 @@
         <div class="page-header">
             <h1>ISSl</h1>
         </div>
-        <div class="notice">
-            <%if(status == 0){%>
-                <a href="/create" class="btn btn-primary">Create</a>
-            <%}%>
-            <div>
-                <h1><a href="/show?id=Door">Door</a></h1>
-            </div>
-            <div id="editor">
-                <%- data %>
-            </div>
-        </div>
         <div class="recent-changes">
             <div class="page-header">
                 <h3>Recent Changes</h3>
@@ -58,6 +47,17 @@
                 <%}%>
                 </tbody>
             </table>
+        </div>
+        <div class="notice">
+            <%if(status == 0){%>
+                <a href="/create" class="btn btn-primary">Create</a>
+            <%}%>
+            <div>
+                <h1><a href="/show?id=Door">Door</a></h1>
+            </div>
+            <div id="editor">
+                <%- data %>
+            </div>
         </div>
     </div>
 
