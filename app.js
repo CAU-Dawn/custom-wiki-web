@@ -40,6 +40,6 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-app.listen(8080, function(){
+app.listen(443, function(){
     console.log('Express 모드: '+app.get('env')+', Express 서버가 80번 포트에서 시작됨');
 });
