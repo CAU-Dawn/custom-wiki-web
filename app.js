@@ -27,7 +27,7 @@ mongoose.connect('mongodb://localhost:27017');
 
 app.use('/', index);
 
-app.use('/backdoor', backdoor); // backdoor로 들어온 라우팅 관리
+app.use('/backdoor', backdoor);
 
 app.use(function(req, res, next) {
     res.status(404).send('Sorry cant find that!');
@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Error!');
-}); // 에러 미들웨어 
+});
 
 module.exports = app;
 
