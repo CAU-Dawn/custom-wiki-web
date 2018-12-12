@@ -11,8 +11,11 @@
     gtag('config', 'UA-125748467-1');
     </script>
 
-    <title><%= title %></title>
+    <title>중앙대 산업보안학과 위키</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="중앙대학교 산업보안학과" />
+    <meta name="keyword" content="중앙,중앙대,중대,중앙대학교,산보,산업보안,보안,사이버보안,정보보안,정보보호,융합보안,산업보안학과,공식,위키"/>
+    <meta name="description" content="안녕하세요. 중앙대학교 산업보안학과 공식 위키 입니다." />
     <link href="https://fonts.googleapis.com/css?family=ABeeZee|Poiret+One|Raleway:700" rel="stylesheet">
     <link rel="shortcut icon" href="../images/favicon.ico">
     <% include ../partials/indexcss %>
@@ -23,7 +26,7 @@
     <% include ../partials/indexnav %>
     <div class="container">
         <div class="page-header">
-            <h1>ISSl</h1>
+            <h1>산업보안학과 위키</h1>
         </div>
         <div class="recent-changes">
             <div class="page-header">
@@ -44,7 +47,7 @@
                     <%var i = 0;%>
                     <%contents.forEach(function(item){%>
                     <%i++;%>
-                    <%if(i>5) return %>
+                    <%if(i>10) return %>
                     <tr>
                         <td class="number"><%=item.number%></td>
                         <td class="title"><a href="/show?id=<%=item.title%>"><%=item.title%></a></td>
@@ -58,6 +61,26 @@
                 <%}%>
                 </tbody>
             </table>
+        <div id="disqus_thread"></div>
+            <script>
+
+            /**
+            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+            
+            var disqus_config = function () {
+            this.page.url = 'http://issl.wiki';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = 'INDEX'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            
+            (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://issl-wiki.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         </div>
         <div class="notice">
             <%if(status == 0){%>
@@ -102,6 +125,6 @@
         });
       });
     </script>
-
+    <script id="dsq-count-scr" src="//issl-wiki.disqus.com/count.js" async></script>
 </body>
 </html>
